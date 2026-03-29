@@ -1,80 +1,105 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Bed, ShoppingBag, Wind, ArrowRight } from 'lucide-react';
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
-    <div className="relative pt-32 pb-20 overflow-hidden min-h-[90vh] flex items-center bg-[#F4F1EE] dark:bg-gray-950 transition-colors duration-500">
-      {/* Background Image with Immersive Overlay */}
-      <div className="absolute inset-0 z-0 select-none">
-        <img
-          src="/hero-bg.png"
-          className="w-full h-full object-cover opacity-50 dark:opacity-30 mix-blend-multiply dark:mix-blend-overlay transition-opacity duration-700"
-          alt="Linen Rent Background"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#F4F1EE] via-[#F4F1EE]/90 to-[#F4F1EE]/40 dark:from-gray-950 dark:via-gray-950/90 dark:to-gray-950/40" />
+    <div className="relative min-h-[85vh] bg-white dark:bg-[#0F172A] text-slate-900 dark:text-white overflow-hidden flex flex-col items-center pt-24 pb-12 selection:bg-indigo-100 selection:text-indigo-900 transition-all duration-1000 font-sans">
+      
+      {/* Premium Background Image with Layering */}
+      <div className="absolute inset-0 z-0">
+         <div className="absolute inset-0 bg-fixed bg-center bg-cover scale-110 animate-zoom-in opacity-20 dark:opacity-10" 
+              style={{ backgroundImage: "url('/hero-bg.png')" }} />
+         <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/60 to-white dark:from-[#0F172A]/90 dark:via-[#0F172A]/60 dark:to-[#0F172A]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full animate-fade-in">
-
-        {/* Premium Badge */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-20">
-
-          <div className="flex-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-full shadow-xl border border-white/20 mb-10 transform-gpu hover:scale-105 transition-transform cursor-default">
-              <span className="w-2.5 h-2.5 bg-blue-600 rounded-full animate-ping" />
-              <span className="text-[10px] font-black text-gray-800 dark:text-gray-100 uppercase tracking-[0.2em]">Premium Hostel Living 2026</span>
-            </div>
-
-            <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-8 text-[#1A1A1A] dark:text-white leading-[0.9] drop-shadow-sm">
-              Rent <br />
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent italic font-serif">Essentials</span>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center w-full min-h-[60vh]">
+        
+        {/* Left Section: Text & CTA */}
+        <div className="flex flex-col items-start gap-6 animate-fade-in text-left">
+          <div className="flex justify-start animate-fade-in">
+             <div className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full text-[10px] font-black uppercase tracking-[0.3em] shadow-xl">
+               Hostel Living. Reimagined.
+             </div>
+          </div>
+          
+          <div className="space-y-4">
+            <h1 className="text-7xl md:text-8xl xl:text-9xl font-black italic text-slate-900 dark:text-white tracking-tighter leading-[0.85] uppercase">
+              Elite <br /> Weave. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-700 dark:from-indigo-400 dark:via-pink-400 dark:to-indigo-500 px-2 text-6xl md:text-8xl xl:text-[7rem] leading-tight block mt-2">
+                Rent Pure Bedsheets.
+              </span>
             </h1>
-
-            <p className="max-w-md text-xl text-gray-700 dark:text-gray-300 mb-12 leading-relaxed font-bold tracking-tight">
-              Curated comfort for your student life. <br />
-              <span className="text-blue-600 font-black">Browse. Rent. Relax.</span> Delivered straight to your hostel.
+          </div>
+          
+          <div className="max-w-md space-y-6">
+            <p className="text-xl text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic">
+              Unique bedsheet registry for elite living. <br />
+              High-performance fabrics, rented and refined.
             </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-5">
-              <Link to="/browse" className="group relative w-full sm:w-auto bg-[#1A1A1A] dark:bg-blue-600 text-white font-black py-6 px-12 rounded-[2rem] transition-all shadow-2xl hover:shadow-blue-500/40 active:scale-95 overflow-hidden flex items-center justify-center">
-                <span className="relative z-10 tracking-widest uppercase text-sm">Explore Now</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <Link to="/browse" className="group relative px-16 py-6 bg-slate-900 dark:bg-white text-white dark:text-black font-black rounded-full overflow-hidden transition-all shadow-2xl active:scale-95 text-[10px] uppercase tracking-[0.4em]">
+                <span className="relative z-10">Explore Collection</span>
+                <div className="absolute inset-0 bg-indigo-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </Link>
-              <Link to="/dashboard" className="w-full sm:w-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl hover:bg-white text-gray-900 dark:text-white font-black py-6 px-12 rounded-[2rem] transition-all border border-gray-200/50 dark:border-gray-700/50 text-center shadow-xl tracking-widest uppercase text-sm active:scale-95">
-                Dashboard
+              <Link to="/lookbook" className="flex items-center gap-3 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all font-black uppercase text-[10px] tracking-[0.3em] group">
+                View Lookbook <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
               </Link>
             </div>
           </div>
+        </div>
 
-          {/* Pinterest-style Featured Image Group (Enhanced) */}
-          <div className="flex-1 relative hidden lg:flex gap-6 h-[600px] animate-zoom-in">
-            <div className="w-3/5 bg-white dark:bg-gray-900 rounded-[3rem] overflow-hidden shadow-2xl relative translate-y-12 transform-gpu hover:-translate-y-2 transition-transform duration-700">
-              <img
-                src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=600"
-                className="h-full w-full object-cover transition-transform duration-1000 hover:scale-110"
-                alt="Featured Linen"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </div>
-            <div className="w-2/5 flex flex-col gap-6">
-              <div className="h-3/5 bg-gray-200 dark:bg-gray-800 rounded-[3rem] overflow-hidden shadow-2xl transform-gpu hover:-translate-y-2 transition-transform duration-700 delay-100">
-                <img
-                  src="https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=600"
-                  className="h-full w-full object-cover transition-transform duration-1000 hover:scale-110"
-                  alt="Featured Accessories"
-                />
-              </div>
-              <div className="h-2/5 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[3rem] p-10 text-white flex flex-col justify-end shadow-2xl transform-gpu hover:-translate-y-2 transition-transform duration-700 delay-200 group">
-                <p className="text-3xl font-black leading-none tracking-tighter group-hover:scale-105 transition-transform">Best <br />Budget <br />Rentals</p>
-                <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mt-4">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        {/* Right Section: CARNIVAL-style Stacked Gallery */}
+        <div className="relative h-[600px] w-full flex items-center justify-center lg:justify-end pr-0 lg:pr-12 mt-12 lg:mt-0">
+            
+            <div className="relative w-full h-full max-w-md flex items-center justify-center">
+                
+                {/* Image 4: Interior (Deepest) */}
+                <div onClick={() => navigate('/browse?category=Sofa Covers')} className="absolute w-64 h-80 rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl -rotate-[15deg] -translate-x-24 -translate-y-12 opacity-40 blur-[1px] transform transition-all duration-700 hover:z-50 hover:opacity-100 hover:rotate-0 hover:scale-110 hover:blur-0 cursor-pointer group">
+                    <img src="https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0" alt="Linen Interior" />
                 </div>
-              </div>
-            </div>
-          </div>
 
+                {/* Image 3: Pillow/Curtains */}
+                <div onClick={() => navigate('/browse?category=Pillow Covers')} className="absolute w-64 h-80 rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl rotate-[12deg] translate-x-20 translate-y-8 opacity-60 blur-[0.5px] transform transition-all duration-700 hover:z-50 hover:opacity-100 hover:rotate-0 hover:scale-110 hover:blur-0 cursor-pointer group">
+                     <img src="https://images.unsplash.com/photo-1580301762395-21ce84d00bc6?w=800" className="w-full h-full object-cover grayscale group-hover:grayscale-0" alt="Premium Curtains" />
+                </div>
+
+                {/* Image 2: Double Bed */}
+                <div onClick={() => navigate('/browse?search=double')} className="absolute w-64 h-80 rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl -rotate-[5deg] -translate-x-12 translate-y-2 opacity-80 transform transition-all duration-700 hover:z-50 hover:opacity-100 hover:rotate-0 hover:scale-110 cursor-pointer">
+                     <img src="/items/double_bed.png" className="w-full h-full object-cover" alt="Double Bed Luxury" />
+                </div>
+
+                {/* Image 1: Single Bed (Front) */}
+                <div onClick={() => navigate('/browse?search=single')} className="absolute w-72 h-96 rounded-[3rem] overflow-hidden border-8 border-white dark:border-slate-800 shadow-3xl rotate-[3deg] translate-x-4 z-40 transform transition-all duration-700 hover:scale-105 cursor-pointer">
+                     <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800" className="w-full h-full object-cover" alt="Single Bed Pure" />
+                     <div className="absolute bottom-6 left-6 right-6 p-4 bg-white/20 backdrop-blur-xl border border-white/30 rounded-2xl">
+                         <div className="flex items-center justify-between">
+                             <span className="text-[10px] font-black uppercase text-white tracking-widest">Aura Single</span>
+                             <span className="text-[10px] font-black text-white">₹49/wk</span>
+                         </div>
+                     </div>
+                </div>
+            </div>
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(-5deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        @keyframes fade-in {
+          0% { opacity: 0; transform: translateY(40px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}} />
     </div>
   );
 };

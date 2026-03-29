@@ -21,32 +21,48 @@ const CITIES = [
 
 const CitySelector = ({ onSelect }) => {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto animate-fade-in">
-      <div className="max-w-5xl w-full py-8 px-4 transform transition-all animate-zoom-in">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-center text-white mb-16 tracking-tight drop-shadow-lg">
-          Please select your City
-        </h1>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-8 bg-white/90 backdrop-blur-2xl overflow-y-auto animate-fade-in transition-all">
+      <div className="max-w-7xl w-full py-12 px-6 transform transition-all animate-zoom-in relative">
         
-        <div className="flex flex-wrap justify-center gap-x-12 gap-y-12">
+        {/* Background Decorative Blobs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-500/5 blur-[120px] rounded-full pointer-events-none" />
+
+        <div className="text-center mb-24 relative z-10">
+          <span className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.5em] mb-6 block italic">Global Network</span>
+          <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6 tracking-tighter italic uppercase leading-none">
+            Choose Your <br /> <span className="text-indigo-600">Location.</span>
+          </h1>
+          <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Select a hub to initialize inventory</p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-12 gap-y-16 relative z-10">
           {CITIES.map((city) => (
             <button
               key={city.id}
               onClick={() => onSelect(city)}
-              className="group flex flex-col items-center gap-4 transition-all hover:scale-110 active:scale-95 outline-none"
+              className="group flex flex-col items-center gap-6 transition-all hover:-translate-y-4 active:scale-95 outline-none"
             >
-              <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-2 border-white/30 group-hover:border-blue-500 transition-all duration-300 shadow-2xl">
-                <img 
-                  src={city.image} 
-                  alt={city.name} 
-                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"
+              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-[3rem] overflow-hidden border border-slate-100 group-hover:border-indigo-500 transition-all duration-500 shadow-2xl group-hover:shadow-indigo-500/20 bg-white">
+                <img
+                  src={city.image}
+                  alt={city.name}
+                  className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent group-hover:from-transparent transition-all" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-all" />
               </div>
-              <span className="text-white/80 group-hover:text-white font-bold text-xl tracking-tight transition-all duration-300">
-                {city.name}
-              </span>
+              <div className="text-center">
+                <span className="text-slate-400 group-hover:text-slate-900 font-black text-[10px] uppercase tracking-[0.3em] transition-all duration-300 italic">
+                  {city.name}
+                </span>
+                <div className="w-0 h-0.5 bg-indigo-600 mx-auto mt-2 group-hover:w-full transition-all duration-500" />
+              </div>
             </button>
           ))}
+        </div>
+        
+        <div className="mt-32 text-center text-slate-200 dark:text-slate-800 font-black uppercase tracking-[1em] text-[10px]">
+          Linen Rent Hub Systems
         </div>
       </div>
     </div>

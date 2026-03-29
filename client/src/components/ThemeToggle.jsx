@@ -1,30 +1,29 @@
-import React from 'react';
-
 const ThemeToggle = ({ darkMode, setDarkMode }) => {
   return (
-    <label className="flex items-center gap-3 cursor-pointer group" aria-label="Toggle Theme">
-      <span className={`text-[10px] font-black uppercase tracking-widest transition-colors duration-300 ${!darkMode ? 'text-blue-600' : 'text-gray-500'}`}>Light</span>
-      <div className="relative toggle-switch">
+    <label className="flex items-center gap-4 cursor-pointer group" aria-label="Toggle Theme">
+      <span className={`text-[9px] font-black uppercase tracking-[0.3em] transition-all duration-500 italic ${!darkMode ? 'text-indigo-600 scale-110' : 'text-slate-400 opacity-50'}`}>Alpha</span>
+      <div className="relative">
         <input 
           type="checkbox" 
+          className="hidden"
           checked={darkMode}
           onChange={() => setDarkMode(!darkMode)}
         />
-        <div className="toggle-switch-background shadow-lg group-hover:shadow-blue-500/10">
-          <div className="toggle-switch-handle">
+        <div className={`w-14 h-8 rounded-full p-1 transition-all duration-500 shadow-inner flex items-center ${darkMode ? 'bg-indigo-600' : 'bg-slate-50'}`}>
+          <div className={`w-6 h-6 rounded-full bg-white shadow-3xl transform transition-all duration-500 flex items-center justify-center ${darkMode ? 'translate-x-6 rotate-[360deg]' : 'translate-x-0'}`}>
             {darkMode ? (
-              <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M16.071 16.071l.707.707M7.757 7.757l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+              <svg className="w-3 h-3 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
               </svg>
             ) : (
-              <svg className="w-5 h-5 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              <svg className="w-3 h-3 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
               </svg>
             )}
           </div>
         </div>
       </div>
-      <span className={`text-[10px] font-black uppercase tracking-widest transition-colors duration-300 ${darkMode ? 'text-green-500' : 'text-gray-500'}`}>Dark</span>
+      <span className={`text-[9px] font-black uppercase tracking-[0.3em] transition-all duration-500 italic ${darkMode ? 'text-indigo-400 scale-110' : 'text-slate-400 opacity-50'}`}>Omega</span>
     </label>
   );
 };

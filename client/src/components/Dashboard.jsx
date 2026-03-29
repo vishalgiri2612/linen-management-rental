@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { ShoppingBag, Star, Zap, Gem, Leaf, Wind, Bed, Sofa, ArrowUpRight, ArrowRight, Clock, Box, ShieldCheck, User, Settings, CreditCard, LogOut } from 'lucide-react';
 
 const Dashboard = () => {
-  const { user, isAuthenticated, token } = useAuth();
-  const [activeTab, setActiveTab] = React.useState('Dashboard');
+  const { user, isAuthenticated, token, logout } = useAuth();
   const [rentals, setRentals] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -14,7 +14,6 @@ const Dashboard = () => {
         const response = await fetch('http://localhost:5000/api/rent/my-rentals', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-
         const data = await response.json();
         setRentals(data);
       } catch (error) {
@@ -24,155 +23,221 @@ const Dashboard = () => {
       }
     };
     if (isAuthenticated) fetchRentals();
-  }, [isAuthenticated]);
+  }, [token, isAuthenticated]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  const menuItems = [
-    { name: 'Dashboard', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-    )},
-    { name: 'Analytics', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-    )},
-    { name: 'Task List', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-    )},
-    { name: 'Tracking', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-    )},
-    { name: 'Setting', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-    )},
-  ];
-
   return (
-    <div className="flex min-h-screen bg-[#FDFCFB] dark:bg-gray-950 transition-colors pt-20">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col items-center py-10 px-6 hidden lg:flex">
-        <div className="flex items-center gap-3 mb-12">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-lg shadow-lg">L</div>
-          <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter">LinenRental</span>
-        </div>
-
-        <div className="relative mb-10 w-full group">
-          <div className="w-24 h-24 mx-auto rounded-3xl overflow-hidden shadow-2xl ring-4 ring-offset-4 ring-blue-500/20 dark:ring-offset-gray-950 transition-transform group-hover:scale-110 duration-500">
-            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} alt="Avatar" className="w-full h-full object-cover" />
-          </div>
-          <div className="absolute bottom-0 right-1/4 w-6 h-6 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-md border-2 border-white dark:border-gray-900">
-             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          </div>
-          <div className="mt-4 text-center">
-            <h3 className="font-black text-gray-900 dark:text-white">{user?.name}</h3>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Hostel: {user?.hostelId}, Room: {user?.roomNumber}</p>
-          </div>
-        </div>
-
-        <nav className="w-full space-y-2">
-          {menuItems.map((item) => (
-            <button
-              key={item.name}
-              onClick={() => setActiveTab(item.name)}
-              className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all font-bold ${activeTab === item.name 
-                ? 'bg-[#F4F1EE] dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' 
-                : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'}`}
-            >
-              <span className={activeTab === item.name ? 'text-blue-600' : ''}>{item.icon}</span>
-              <span className="text-sm">{item.name}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-8 lg:p-12 overflow-y-auto">
-        <header className="flex items-center justify-between mb-12">
-          <div>
-            <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Hello, {user?.name?.split(' ')[0]}</h1>
-            <p className="text-gray-400 font-bold text-sm mt-1">Today is Monday, 25 March 2026</p>
-          </div>
-          <div className="flex items-center gap-6">
-            <div className="relative hidden md:block">
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                className="bg-gray-100 dark:bg-gray-950 border border-transparent focus:bg-white dark:focus:bg-gray-900 focus:ring-2 focus:ring-blue-500/20 rounded-2xl py-3 px-5 pl-11 text-sm font-bold transition-all w-64"
-              />
-              <svg className="absolute left-4 top-3.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+    <div className="min-h-screen bg-[#f8f9fa] dark:bg-[#0F172A] text-[#191c1d] dark:text-[#f8fafc] pt-24 pb-32 transition-colors duration-700 selection:bg-indigo-100">
+      
+      {/* Floating Modern Navigation Header */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-black/40 backdrop-blur-2xl border-b border-[#c7c4d7]/15">
+         <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+               <div className="w-10 h-10 bg-[#6366F1] rounded-2xl flex items-center justify-center text-white text-lg font-black italic">L</div>
+               <span className="text-xl font-black italic uppercase tracking-tighter">LINEN<span className="text-[#6366F1]">RENT.</span></span>
             </div>
-            <button className="bg-gray-900 dark:bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-black text-sm shadow-xl hover:-translate-y-1 transition-all active:scale-95">
-              Add New Booking
-            </button>
+            <div className="flex items-center gap-8">
+               <Link to="/browse" className="text-[10px] font-black uppercase tracking-[0.3em] hover:text-[#6366F1] transition-colors">Catalogue</Link>
+               <button onClick={logout} className="text-[10px] font-black uppercase tracking-[0.3em] text-[#464554] hover:text-red-500 transition-colors flex items-center gap-2">
+                  <LogOut size={14} /> Exit
+               </button>
+            </div>
+         </div>
+      </nav>
+
+      <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-20 mt-16 animate-fade-in opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
+        
+        {/* Welcome Header */}
+        <header className="mb-24">
+          <p className="text-[#6366F1] font-black text-[10px] uppercase tracking-[0.6em] mb-6">Personal Atelier</p>
+          <div className="flex flex-col md:flex-row justify-between items-end gap-12">
+            <div>
+               <h1 className="text-[clamp(3rem,6vw,5rem)] font-serif italic leading-none tracking-tighter">
+                 Good Morning, <br />
+                 <span className="font-sans font-black not-italic text-[#191c1d] dark:text-white">{user?.name?.split(' ')[0]}.</span>
+               </h1>
+            </div>
+            <div className="flex items-center gap-6">
+               <div className="text-right">
+                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#c7c4d7] mb-1">Total Curated</p>
+                  <p className="text-2xl font-black italic leading-none">₹1,240 <span className="text-xs non-italic text-[#c7c4d7] tracking-normal font-normal">/mo</span></p>
+               </div>
+               <div className="w-px h-12 bg-[#c7c4d7]/30" />
+               <div className="text-right">
+                  <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#c7c4d7] mb-1">Impact Grade</p>
+                  <p className="text-2xl font-black text-emerald-500 leading-none">A+</p>
+               </div>
+            </div>
           </div>
         </header>
 
-        <div className="w-full">
-          <div>
-            <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-8 tracking-tight">Rentals for today</h2>
-            {loading ? (
-              <p>Loading rentals...</p>
-            ) : rentals.length === 0 ? (
-              <p className="text-gray-500 font-bold italic">No active rentals found. Start browsing to rent essentials!</p>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {rentals.map((rental, i) => (
-                  <div key={i} className="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-sm flex items-center justify-between group hover:shadow-xl transition-all duration-500">
-                    <div className="flex items-center gap-6">
-                      <div className={`w-1.5 h-16 rounded-full bg-${i % 2 === 0 ? 'blue' : 'indigo'}-500 shadow-lg`} />
-                      <div>
-                        <h4 className="font-black text-gray-900 dark:text-white text-xl leading-none mb-2">{rental.itemId?.itemName}</h4>
-                        <p className="text-gray-400 font-bold text-sm tracking-tight">Status: {rental.bookingStatus} • Due: {new Date(rental.endDate).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <div className={`w-10 h-10 rounded-full border-4 flex items-center justify-center transition-all duration-500 ${rental.bookingStatus === 'active' ? 'bg-indigo-600 border-indigo-600' : 'border-gray-100 dark:border-gray-800'}`}>
-                      {rental.bookingStatus === 'active' && <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>}
-                    </div>
+        <div className="grid grid-cols-12 gap-8 lg:gap-12">
+          
+          {/* Main Content Area: Bento Grid */}
+          <div className="col-span-12 lg:col-span-8 space-y-12">
+            
+            {/* The Featured Collection Card (The "Active" piece) */}
+            <div className="group relative overflow-hidden rounded-[3.5rem] bg-[#edeeef] dark:bg-white/5 aspect-[21/10] md:aspect-[21/9] flex items-center p-12 lg:p-20 transition-all duration-700 hover:shadow-2xl hover:shadow-indigo-500/5">
+               <div className="relative z-10 max-w-md space-y-8">
+                  <div className="flex items-center gap-3">
+                     <span className="w-2 h-2 bg-[#6366F1] rounded-full animate-pulse" />
+                     <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#464554]">Currently Managed</span>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
-
-
-      {/* Right Sidebar */}
-      <aside className="w-80 bg-white dark:bg-gray-950 border-l border-gray-50 dark:border-gray-900 p-10 hidden 2xl:block overflow-y-auto">
-        <div className="flex items-center justify-between mb-10">
-          <h2 className="text-xl font-black text-gray-900 dark:text-white">Calendar</h2>
-          <button className="relative w-10 h-10 bg-gray-50 dark:bg-gray-900 rounded-xl flex items-center justify-center">
-            <svg className="w-5 h-5 text-gray-900 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-            <div className="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border-2 border-white dark:border-gray-950" />
-          </button>
-        </div>
-
-        <div className="space-y-12">
-          {['Oct 20, 2026', 'Oct 21, 2026', 'Oct 22, 2026'].map((date, idx) => (
-            <div key={idx}>
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-xs font-black text-gray-400 uppercase tracking-widest">{date}</span>
-                <span className="text-gray-300">•••</span>
-              </div>
-              <div className="space-y-6">
-                {[
-                  { time: '10:00', title: 'Pickup Request', desc: 'Premium Linen' },
-                  { time: '13:20', title: 'Due Return', desc: 'Study Lamp' }
-                ].map((event, i) => (
-                  <div key={i} className="flex gap-4">
-                    <span className="text-xs font-black text-gray-900 dark:text-white w-10">{event.time}</span>
-                    <div className="flex-1 pl-4 border-l-4 border-orange-500 rounded">
-                      <h5 className="text-sm font-black text-gray-900 dark:text-white">{event.title}</h5>
-                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">{event.desc}</p>
-                    </div>
+                  <h3 className="text-5xl font-serif italic leading-tight text-[#191c1d] dark:text-white">The Egyptian <br /> Cotton Set.</h3>
+                  <p className="text-sm text-[#464554] dark:text-slate-400 font-normal leading-relaxed">Your signature collection is currently active. Next scheduled cycle is January 14th.</p>
+                  <div className="flex gap-4">
+                     <button className="px-10 py-5 bg-[#6366F1] text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:bg-[#4648d4] transition-all shadow-xl shadow-indigo-600/20 active:scale-95">Manage Edit</button>
+                     <button className="px-8 py-5 border border-[#c7c4d7] rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:bg-[#191c1d] hover:text-white hover:border-[#191c1d] transition-all active:scale-95">Archive</button>
                   </div>
-                ))}
-              </div>
+               </div>
+               
+               {/* Decorative Element */}
+               <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity duration-1000 grayscale group-hover:grayscale-0">
+                  <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" alt="Fabric" />
+               </div>
             </div>
-          ))}
+
+            {/* Sub-Metrics Bento */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+               {/* Trackers Tonal Card */}
+               <div className="p-12 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[3rem] space-y-10 group hover:border-[#6366F1]/30 transition-all">
+                  <div className="flex justify-between items-center">
+                     <Clock className="text-[#6366F1]" size={20} />
+                     <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#c7c4d7]">Timeline</span>
+                  </div>
+                  <div className="space-y-2">
+                     <p className="text-4xl font-black italic">12 Days</p>
+                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#464554]">Until Next Refresh</p>
+                  </div>
+                  <div className="w-full bg-[#edeeef] dark:bg-white/10 h-px" />
+                  <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
+                     <span className="text-[#c7c4d7]">Jan 02</span>
+                     <span className="text-[#6366F1]">Jan 14</span>
+                  </div>
+               </div>
+
+               {/* Loyalty Tonal Card */}
+               <div className="p-12 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[3rem] space-y-10 group hover:border-[#6366F1]/30 transition-all">
+                  <div className="flex justify-between items-center">
+                     <Gem className="text-pink-400" size={20} />
+                     <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#c7c4d7]">Archive Points</span>
+                  </div>
+                  <div className="space-y-2">
+                     <p className="text-4xl font-black italic">2.4k pts</p>
+                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#464554]">Master Textile Tier</p>
+                  </div>
+                  <div className="w-full bg-[#edeeef] dark:bg-white/10 h-px" />
+                  <button className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.4em] text-pink-400 group-hover:translate-x-1 transition-transform">
+                     Redeem Collection <ArrowUpRight size={14} />
+                  </button>
+               </div>
+            </div>
+
+            {/* The Interior Log (Past Orders) */}
+            <section className="space-y-12">
+               <div className="flex items-center justify-between border-b border-[#c7c4d7]/15 pb-8 px-2">
+                  <h2 className="text-2xl font-serif italic">Interior Log.</h2>
+                  <button className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c7c4d7] hover:text-[#191c1d] transition-colors">View All Archive</button>
+               </div>
+               
+               <div className="space-y-6">
+                  {loading ? (
+                    <div className="py-20 text-center text-[10px] font-black uppercase tracking-[0.5em] text-[#c7c4d7]">Decrypting archive...</div>
+                  ) : rentals.length === 0 ? (
+                    <div className="p-16 border-2 border-dashed border-[#c7c4d7]/30 rounded-[3rem] text-center space-y-8">
+                       <p className="text-lg font-serif italic text-[#c7c4d7]">No previous selections found.</p>
+                       <Link to="/browse" className="inline-block px-12 py-5 bg-[#191c1d] text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em]">Start Curation</Link>
+                    </div>
+                  ) : (
+                    rentals.map((rental, i) => (
+                      <div key={i} className="flex items-center justify-between p-8 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[2.5rem] group hover:border-[#6366F1]/30 transition-all">
+                         <div className="flex items-center gap-8">
+                            <div className="w-20 h-20 rounded-[1.5rem] bg-[#edeeef] overflow-hidden">
+                               <img src={rental.itemId?.imageUrl || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=200'} className="w-full h-full object-cover" alt="Item" />
+                            </div>
+                            <div>
+                               <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6366F1] mb-2">{rental.bookingStatus}</p>
+                               <h4 className="text-xl font-black">{rental.itemId?.itemName}</h4>
+                               <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[#c7c4d7]">{new Date(rental.startDate).toLocaleDateString()} - {new Date(rental.endDate).toLocaleDateString()}</p>
+                            </div>
+                         </div>
+                         <button className="w-12 h-12 rounded-full border border-[#c7c4d7] flex items-center justify-center text-[#191c1d] dark:text-white hover:bg-[#191c1d] hover:text-white transition-all">
+                            <ArrowUpRight size={18} />
+                         </button>
+                      </div>
+                    ))
+                  )}
+               </div>
+            </section>
+          </div>
+
+          {/* Sidebar Area: User & Settings */}
+          <aside className="col-span-12 lg:col-span-4 space-y-12">
+             {/* Profile Card */}
+             <div className="p-12 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[3.5rem] space-y-12 shadow-2xl shadow-indigo-900/5">
+                <div className="flex flex-col items-center text-center space-y-6">
+                   <div className="relative group">
+                      <div className="absolute inset-0 bg-[#6366F1] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} className="w-32 h-32 rounded-full border-4 border-white relative z-10 shadow-2xl" alt="Avatar" />
+                   </div>
+                   <div>
+                      <h4 className="text-2xl font-black tracking-tighter">{user?.name}</h4>
+                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#6366F1] mt-2">Certified Resident</p>
+                   </div>
+                </div>
+
+                <div className="w-full h-px bg-[#c7c4d7]/15" />
+
+                <nav className="space-y-4">
+                   {[
+                     { label: 'Profile Details', icon: <User size={16} /> },
+                     { label: 'Billing Atelier', icon: <CreditCard size={16} /> },
+                     { label: 'Preferences', icon: <Settings size={16} /> },
+                     { label: 'Account Security', icon: <ShieldCheck size={16} /> },
+                   ].map((item, i) => (
+                      <button key={i} className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-[#edeeef] dark:hover:bg-white/5 transition-colors group">
+                         <div className="flex items-center gap-4 text-[#464554] dark:text-white group-hover:text-[#6366F1]">
+                            {item.icon}
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">{item.label}</span>
+                         </div>
+                         <ArrowRight size={14} className="text-[#c7c4d7] opacity-0 group-hover:opacity-100 transition-all" />
+                      </button>
+                   ))}
+                </nav>
+
+                <div className="p-8 bg-[#6366F1]/5 rounded-[2.5rem] border border-[#6366F1]/10 space-y-4">
+                   <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6366F1]">Atelier Service</p>
+                   <p className="text-xs text-[#464554] dark:text-slate-400 font-normal leading-relaxed">Your subscription tier allows for premium linen swaps every 14 days.</p>
+                </div>
+             </div>
+
+             {/* Support/Eco Card */}
+             <div className="p-12 bg-[#191c1d] text-white rounded-[3.5rem] space-y-8 relative overflow-hidden">
+                <div className="relative z-10 space-y-6">
+                   <Leaf size={32} className="text-emerald-400" />
+                   <h4 className="text-3xl font-serif italic">Living Leaf.</h4>
+                   <p className="text-sm text-white/60 font-normal leading-relaxed">Your choice of rental vs purchase has saved approximately <span className="text-white font-bold">12,000 liters</span> of water this month.</p>
+                   <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-emerald-400 hover:text-white transition-colors">Download Impact Report <ArrowUpRight size={14} /></button>
+                </div>
+                {/* Subtle Glow */}
+                <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[80%] bg-emerald-500/10 blur-[100px] rounded-full" />
+             </div>
+          </aside>
         </div>
-      </aside>
+      </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes fade-in {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}} />
     </div>
   );
 };
