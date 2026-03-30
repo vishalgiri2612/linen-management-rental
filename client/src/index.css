@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
 
 /* Configure Dark Mode for Tailwind CSS v4 */
@@ -9,8 +10,8 @@
     --bg-secondary: #F8F9FA;
     --text-primary: #0F172A;
     --text-secondary: #475569;
-    --accent-primary: #6366F1;
-    --accent-secondary: #EC4899;
+    --accent-primary: #10B981;
+    --accent-secondary: #14B8A6;
     --border: #E2E8F0;
   }
 
@@ -61,6 +62,24 @@
       transform: translateY(-20px);
     }
   }
+
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 40s linear infinite;
+}
+
+.pause {
+  animation-play-state: paused;
 }
 
 .animate-fade-in {
@@ -147,4 +166,108 @@ html.dark body {
 .dark .glass-card {
   background: rgba(15, 23, 42, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Premium Huge Explore Button */
+.btn--huge {
+  cursor: pointer;
+  position: relative;
+  height: 52px;
+  background-color: #0F172A;
+  text-transform: uppercase;
+  display: inline-block;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 0 30px 0 60px;
+  white-space: nowrap;
+  border-radius: 0;
+  transition: all 0.5s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+.dark .btn--huge {
+  background-color: #fff;
+  color: #0F172A;
+}
+
+.btn--huge:before {
+  transition: all 0.5s cubic-bezier(0.785, 0.15, 0.15, 0.86);
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 100%;
+  background-color: #10B981;
+}
+
+.btn--huge:after {
+  transition: all 0.5s cubic-bezier(0.785, 0.15, 0.15, 0.86);
+  content: '→';
+  font-size: 14px;
+  line-height: 22px;
+  color: #fff;
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  background: #0F172A;
+  z-index: 2;
+  border-radius: 50%;
+  border: 2px solid #10B981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dark .btn--huge:after {
+  background: #fff;
+  color: #0F172A;
+}
+
+.btn--huge__text {
+  position: relative;
+  top: -1px;
+  transition: all 0.5s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.btn--huge__text div {
+  position: relative;
+  color: #fff;
+}
+
+.dark .btn--huge__text div {
+  color: #0F172A;
+}
+
+.btn--huge__text span {
+  transition: all 0.5s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  top: 0;
+  left: 0;
+  color: #10B981;
+  width: 0;
+  font-weight: 900;
+}
+
+.btn--huge:hover:after {
+  transform: translateX(-40px);
+}
+
+.btn--huge:hover:before {
+  width: 0;
+}
+
+.btn--huge:hover .btn--huge__text span {
+  width: 100%;
 }

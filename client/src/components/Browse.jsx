@@ -99,7 +99,7 @@ const Browse = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] dark:bg-[#0F172A] text-[#191c1d] dark:text-[#f8fafc] pt-32 pb-32 transition-colors duration-700 selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="min-h-screen bg-[#f8f9fa] dark:bg-[#0F172A] text-[#191c1d] dark:text-[#f8fafc] pt-32 pb-32 transition-colors duration-700 selection:bg-emerald-100 selection:text-emerald-900">
       
       {/* Editorial Grid Gutter */}
       <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-20 relative z-10">
@@ -108,12 +108,12 @@ const Browse = () => {
         <header className="mb-24 flex flex-col md:flex-row justify-between items-end gap-12 border-b border-[#c7c4d7]/15 pb-20">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 mb-8 animate-fade-in opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-               <Sparkles size={16} className="text-[#6366F1]" />
-               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#6366F1]">The Curated Thread</span>
+               <Sparkles size={16} className="text-[#059669]" />
+               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#059669]">The Curated Thread</span>
             </div>
-            <h1 className="text-[clamp(3.5rem,8vw,6rem)] font-serif italic font-light tracking-tighter leading-[0.9] capitalize mb-10 animate-fade-in opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+            <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] font-serif italic font-light tracking-tighter leading-[0.9] capitalize mb-10 animate-fade-in opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
               The Curated <br />
-              <span className="font-sans font-black not-italic text-[#6366F1]/90">Inventory.</span>
+              <span className="font-sans font-black not-italic text-[#191c1d] dark:text-white">Inventory.</span>
             </h1>
             <p className="text-xl text-[#464554] dark:text-slate-400 font-normal leading-relaxed max-w-lg animate-fade-in opacity-0" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
               Moving away from rigid constraints, we embrace an aesthetic reminiscent of a premium lifestyle magazine. Soft, luxurious, and deeply intentional.
@@ -138,43 +138,60 @@ const Browse = () => {
         <div className="flex flex-col lg:flex-row gap-24">
           
           {/* Tonal Navigation Aside */}
-          <aside className="w-full lg:w-64 shrink-0 space-y-20 animate-fade-in opacity-0" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
-            <div className="space-y-10">
-              <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#c7c4d7]">Material & Edit</h3>
-              <nav className="flex lg:flex-col flex-wrap gap-4">
+          {/* Premium & Accessible Tonal Navigation Aside */}
+          <aside className="w-full lg:w-64 shrink-0 space-y-12 animate-fade-in opacity-0" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
+            
+            {/* Value Proposition Badge */}
+            <div className="p-6 bg-white dark:bg-white/5 border border-[#c7c4d7]/30 dark:border-white/10 rounded-3xl shadow-lg shadow-emerald-900/5 transition-all hover:border-emerald-500/30">
+               <div className="flex items-center gap-3 mb-3">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-[#191c1d] dark:text-white">Accessible Luxury</span>
+               </div>
+               <p className="text-xs text-[#464554] dark:text-slate-400 font-medium leading-relaxed italic">
+                  Premium linens at a fraction of retail. Experience high-end comfort designed specifically for a student's budget.
+               </p>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#c7c4d7] pl-2">Material & Edit</h3>
+              <nav className="flex lg:flex-col flex-wrap gap-3">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`text-left px-2 py-3 text-[11px] font-black uppercase tracking-[0.3em] transition-all relative group ${
+                    className={`text-left px-5 py-4 text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all duration-300 w-full flex items-center justify-between group ${
                       activeCategory === cat 
-                      ? 'text-[#6366F1]' 
-                      : 'text-[#464554] hover:text-[#191c1d] dark:hover:text-white'
+                      ? 'bg-[#191c1d] dark:bg-white text-white dark:text-[#191c1d] shadow-xl scale-105' 
+                      : 'bg-[#edeeef]/50 dark:bg-white/5 text-[#464554] dark:text-slate-300 hover:bg-[#c7c4d7]/20 border border-transparent hover:border-[#c7c4d7]/30'
                     }`}
                   >
                     {cat}
                     {activeCategory === cat && (
-                      <div className="absolute left-[-1rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[#6366F1] rounded-full" />
+                       <Sparkles size={14} className={activeCategory === cat ? 'text-white dark:text-[#191c1d]' : 'text-transparent'} />
                     )}
                   </button>
                 ))}
               </nav>
             </div>
 
-            <div className="space-y-10">
-               <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#c7c4d7]">Intensity</h3>
-               <div className="space-y-8 px-2">
+            <div className="space-y-8 p-6 bg-[#edeeef]/50 dark:bg-white/5 rounded-3xl border border-[#c7c4d7]/20 transition-all hover:border-emerald-500/30">
+               <h3 className="text-[10px] font-black uppercase tracking-[0.5em] text-[#c7c4d7]">Weekly Rate</h3>
+               <div className="space-y-6">
                   <input 
                     type="range" 
                     min="0" 
                     max="1000" 
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
-                    className="w-full h-px bg-[#c7c4d7] appearance-none cursor-pointer accent-[#6366F1]"
+                    style={{ accentColor: '#191c1d' }}
+                    className="w-full h-1 bg-[#c7c4d7] dark:bg-white/20 rounded-full appearance-none cursor-pointer dark:accent-white"
                   />
-                  <div className="flex justify-between text-[9px] font-black uppercase tracking-[0.3em] text-[#464554]">
-                     <span>₹0</span>
-                     <span>Under ₹{priceRange[1]}</span>
+                  <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.3em]">
+                     <span className="text-[#c7c4d7]">₹0</span>
+                     <div className="px-4 py-2 bg-white dark:bg-[#191c1d] border border-[#c7c4d7]/30 rounded-full text-[#191c1d] dark:text-white shadow-sm flex items-center gap-2">
+                       <span>Under</span> 
+                       <span className="text-emerald-500 font-black">₹{priceRange[1]}</span>
+                     </div>
                   </div>
                </div>
             </div>
@@ -184,7 +201,7 @@ const Browse = () => {
           <main className="flex-1">
              {loading ? (
                 <div className="flex flex-col items-center justify-center py-60">
-                   <div className="w-12 h-12 border-2 border-[#6366F1] border-t-transparent rounded-full animate-spin mb-6" />
+                   <div className="w-12 h-12 border-2 border-[#059669] border-t-transparent rounded-full animate-spin mb-6" />
                    <p className="text-[10px] font-black uppercase tracking-[0.6em] text-[#c7c4d7]">Curating the feed...</p>
                 </div>
              ) : filteredItems.length === 0 ? (
@@ -200,8 +217,7 @@ const Browse = () => {
                         className={`group relative flex flex-col cursor-pointer transition-all duration-700 animate-fade-in opacity-0`}
                         style={{ 
                           animationDelay: `${1.2 + (idx * 0.1)}s`, 
-                          animationFillMode: 'forwards',
-                          marginTop: idx % 3 === 1 ? '4rem' : '0' // Intentional Asymmetry
+                          animationFillMode: 'forwards'
                         }}
                       >
                          {/* Image Layer: The Canvas */}
@@ -227,19 +243,19 @@ const Browse = () => {
                          {/* Content Section: The Editorial Tension */}
                          <div className="pt-10 space-y-4 px-2">
                             <div className="flex items-center gap-3">
-                               <span className="text-[9px] font-black uppercase tracking-[0.3em] text-[#6366F1]">{item.category}</span>
+                               <span className="text-[9px] font-black uppercase tracking-[0.3em] text-[#059669]">{item.category}</span>
                                <div className="w-1 h-1 bg-[#c7c4d7] rounded-full" />
                                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-[#464554]">The 2024 Edit</span>
                             </div>
-                            <h3 className="text-3xl font-serif italic text-[#191c1d] dark:text-white leading-tight group-hover:text-[#6366F1] transition-colors">{item.name}</h3>
+                            <h3 className="text-3xl font-serif italic text-[#191c1d] dark:text-white leading-tight transition-colors h-[4rem] line-clamp-2">{item.name}</h3>
                             <p className="text-sm text-[#464554] dark:text-slate-400 font-normal leading-relaxed line-clamp-2">{item.description}</p>
                             
                             <button 
                               onClick={(e) => handleAddToCart(e, item)}
                               className="mt-6 flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] group/btn transition-all"
                             >
-                               <span className="border-b border-transparent group-hover/btn:border-[#6366F1] pb-1">Add to selection</span>
-                               <div className="w-8 h-8 rounded-full border border-[#c7c4d7] flex items-center justify-center group-hover/btn:bg-[#6366F1] group-hover/btn:border-[#6366F1] group-hover/btn:text-white transition-all">
+                               <span className="border-b border-transparent group-hover/btn:border-[#059669] pb-1">Add to selection</span>
+                               <div className="w-8 h-8 rounded-full border border-[#c7c4d7] flex items-center justify-center group-hover/btn:bg-[#059669] group-hover/btn:border-[#059669] group-hover/btn:text-white transition-all">
                                   <ShoppingBag size={12} />
                                </div>
                             </button>

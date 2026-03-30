@@ -9,13 +9,13 @@ const Signup = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    
+
     // Get form data
     const formData = new FormData(e.target);
     const name = `${formData.get('firstName')} ${formData.get('lastName')}`;
     const email = formData.get('email');
     const password = formData.get('password');
-    
+
     const phone = "0000000000";
     const hostelId = "H001";
     const roomNumber = "101";
@@ -49,20 +49,18 @@ const Signup = () => {
         <img
           src="https://images.unsplash.com/photo-1534073828943-f801091bb18c?auto=format&fit=crop&q=80&w=1200"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110 grayscale-[10%] group-hover:grayscale-0"
-          alt="Premium Hostel Living"
+          alt="Premium Elite Living"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/60 via-indigo-900/40 to-black/60 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/60 via-emerald-900/40 to-black/60 mix-blend-multiply" />
 
         {/* Floating Content Overlay */}
         <div className="relative z-10 w-full h-full flex flex-col justify-between p-24 text-white">
-          <Link to="/" className="text-3xl font-black italic tracking-tighter uppercase">
-            LINEN<span className="text-indigo-400">RENT.</span>
-          </Link>
+
 
           <div className="animate-fade-in-up">
             <h2 className="text-7xl md:text-8xl font-black leading-[0.85] mb-8 tracking-tighter uppercase italic">
               Start Your <br />
-              <span className="text-indigo-400">Journey.</span>
+              <span className="text-emerald-400">Journey.</span>
             </h2>
             <p className="max-w-md text-xl text-slate-200 font-medium leading-relaxed italic uppercase tracking-wider text-sm">
               Join the community of students enjoying curated comfort and premium hostel essentials.
@@ -71,9 +69,9 @@ const Signup = () => {
 
           <div className="flex items-center gap-6 text-[10px] font-black tracking-[0.4em] uppercase opacity-60 italic">
             <span>Easy Setup</span>
-            <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
             <span>Fast Delivery</span>
-            <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full" />
+            <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
             <span>Support Anytime</span>
           </div>
         </div>
@@ -83,12 +81,12 @@ const Signup = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-24 relative bg-white dark:bg-[#0F172A]">
 
         {/* Subtle background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-[460px] w-full relative z-10">
           <div className="mb-12">
-            <div className="inline-flex items-center gap-3 px-5 py-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-10 italic">
-              <span className="w-2 h-2 bg-indigo-600 rounded-full animate-pulse" />
+            <div className="inline-flex items-center gap-3 px-5 py-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-[0.3em] rounded-full mb-10 italic">
+              <span className="w-2 h-2 bg-emerald-600 rounded-full animate-pulse" />
               Join the Network
             </div>
             <h1 className="text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tighter mb-6 leading-none italic uppercase">
@@ -99,18 +97,18 @@ const Signup = () => {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-gray-900 p-1 transition-all">
+          <div className="transition-all">
             {/* Role Switcher */}
             <div className="flex p-2 bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] mb-10 border border-slate-100 dark:border-gray-700">
               <button
                 onClick={() => setIsAdmin(false)}
-                className={`flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] rounded-[2rem] transition-all ${!isAdmin ? 'bg-white dark:bg-indigo-600 text-slate-900 dark:text-white shadow-xl scale-[1.02]' : 'text-slate-400 hover:text-slate-600'}`}
+                className={`flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] rounded-[2rem] transition-all ${!isAdmin ? 'bg-white dark:bg-emerald-600 text-slate-900 dark:text-white shadow-xl scale-[1.02]' : 'text-slate-400 hover:text-slate-600'}`}
               >
                 Student
               </button>
               <button
                 onClick={() => setIsAdmin(true)}
-                className={`flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] rounded-[2rem] transition-all ${isAdmin ? 'bg-white dark:bg-indigo-600 text-indigo-600 dark:text-white shadow-xl scale-[1.02]' : 'text-slate-400 hover:text-slate-600'}`}
+                className={`flex-1 py-4 text-[10px] font-black uppercase tracking-[0.3em] rounded-[2rem] transition-all ${isAdmin ? 'bg-white dark:bg-emerald-600 text-emerald-600 dark:text-white shadow-xl scale-[1.02]' : 'text-slate-400 hover:text-slate-600'}`}
               >
                 Admin
               </button>
@@ -125,7 +123,7 @@ const Signup = () => {
                     required
                     name="firstName"
                     placeholder="John"
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-indigo-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-emerald-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
                   />
                 </div>
                 <div className="space-y-2">
@@ -135,7 +133,7 @@ const Signup = () => {
                     required
                     name="lastName"
                     placeholder="Doe"
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-indigo-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-emerald-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
                   />
                 </div>
               </div>
@@ -145,8 +143,8 @@ const Signup = () => {
                   type="email"
                   required
                   name="email"
-                  placeholder="name@aura.com"
-                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-indigo-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
+                  placeholder="name@closetrush.com"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-emerald-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
                 />
               </div>
               <div className="space-y-2">
@@ -156,16 +154,16 @@ const Signup = () => {
                   required
                   name="password"
                   placeholder="••••••••••••"
-                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-indigo-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-transparent focus:border-emerald-600/10 focus:bg-white dark:focus:bg-gray-800 rounded-3xl py-5 px-6 text-slate-900 dark:text-white focus:outline-none transition-all font-bold placeholder:text-slate-300 dark:placeholder:text-gray-600 shadow-inner"
                 />
               </div>
 
               <div className="flex items-center gap-4 px-2">
-                <input type="checkbox" required className="rounded-lg border-slate-200 dark:border-gray-700 text-indigo-600 focus:ring-0 w-6 h-6 transition-all cursor-pointer" />
+                <input type="checkbox" required className="rounded-lg border-slate-200 dark:border-gray-700 text-emerald-600 focus:ring-0 w-6 h-6 transition-all cursor-pointer" />
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Accept Terms</span>
               </div>
 
-              <button type="submit" className="w-full bg-slate-900 dark:bg-indigo-600 hover:bg-black dark:hover:bg-indigo-700 text-white font-black py-6 rounded-[2.5rem] transition-all shadow-3xl hover:shadow-indigo-900/20 active:scale-95 text-[10px] uppercase tracking-[0.4em]">
+              <button type="submit" className="w-full bg-slate-900 dark:bg-emerald-600 hover:bg-black dark:hover:bg-emerald-700 text-white font-black py-6 rounded-[2.5rem] transition-all shadow-3xl hover:shadow-emerald-900/20 active:scale-95 text-[10px] uppercase tracking-[0.4em]">
                 Join Portal
               </button>
             </form>
@@ -183,7 +181,7 @@ const Signup = () => {
 
           <div className="mt-16 text-center text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
             Already in the fleet? {' '}
-            <Link to="/login" className="text-slate-900 dark:text-white hover:text-indigo-600 transition-colors underline underline-offset-4 decoration-indigo-600/30">
+            <Link to="/login" className="text-slate-900 dark:text-white hover:text-emerald-600 transition-colors underline underline-offset-4 decoration-emerald-600/30">
               Access Now
             </Link>
           </div>

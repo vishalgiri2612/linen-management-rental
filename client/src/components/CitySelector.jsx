@@ -21,48 +21,48 @@ const CITIES = [
 
 const CitySelector = ({ onSelect }) => {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-8 bg-white/90 backdrop-blur-2xl overflow-y-auto animate-fade-in transition-all">
-      <div className="max-w-7xl w-full py-12 px-6 transform transition-all animate-zoom-in relative">
-        
-        {/* Background Decorative Blobs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-500/5 blur-[120px] rounded-full pointer-events-none" />
+    <div className="fixed inset-0 z-[100] bg-white/95 dark:bg-[#0F172A]/98 backdrop-blur-3xl overflow-y-auto px-4 py-8 md:p-12 animate-fade-in transition-all">
+      <div className="max-w-7xl mx-auto w-full min-h-full flex flex-col items-center justify-center transform transition-all animate-zoom-in relative">
 
-        <div className="text-center mb-24 relative z-10">
-          <span className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.5em] mb-6 block italic">Global Network</span>
-          <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6 tracking-tighter italic uppercase leading-none">
-            Choose Your <br /> <span className="text-indigo-600">Location.</span>
+        {/* Background Decorative Blobs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none opacity-50" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-teal-500/10 blur-[120px] rounded-full pointer-events-none opacity-50" />
+
+        <div className="text-center mb-12 md:mb-20 relative z-10 w-full pt-12">
+          <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.5em] mb-4 block italic animate-fade-in">Global Network</span>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white mb-4 tracking-tighter italic uppercase leading-none">
+            Choose Your <br className="hidden md:block" /> Location.
           </h1>
-          <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-[10px]">Select a hub to initialize inventory</p>
+          <p className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-[0.2em] text-[9px] md:text-[10px]">Select a hub to initialize inventory</p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-12 gap-y-16 relative z-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-12 relative z-10 w-full px-4">
           {CITIES.map((city) => (
             <button
               key={city.id}
               onClick={() => onSelect(city)}
-              className="group flex flex-col items-center gap-6 transition-all hover:-translate-y-4 active:scale-95 outline-none"
+              className="group flex flex-col items-center gap-4 md:gap-6 transition-all hover:-translate-y-3 active:scale-95 outline-none"
             >
-              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-[3rem] overflow-hidden border border-slate-100 group-hover:border-indigo-500 transition-all duration-500 shadow-2xl group-hover:shadow-indigo-500/20 bg-white">
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden border border-slate-100 dark:border-white/5 group-hover:border-emerald-500 transition-all duration-500 shadow-xl group-hover:shadow-emerald-500/20 bg-white dark:bg-white/5">
                 <img
                   src={city.image}
                   alt={city.name}
                   className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-all" />
+                <div className="absolute inset-0 bg-emerald-900/20 opacity-0 group-hover:opacity-100 transition-all" />
               </div>
               <div className="text-center">
-                <span className="text-slate-400 group-hover:text-slate-900 font-black text-[10px] uppercase tracking-[0.3em] transition-all duration-300 italic">
+                <span className="text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] transition-all duration-300 italic">
                   {city.name}
                 </span>
-                <div className="w-0 h-0.5 bg-indigo-600 mx-auto mt-2 group-hover:w-full transition-all duration-500" />
+                <div className="w-0 h-0.5 bg-emerald-600 dark:bg-emerald-400 mx-auto mt-1 md:mt-2 group-hover:w-full transition-all duration-500" />
               </div>
             </button>
           ))}
         </div>
-        
-        <div className="mt-32 text-center text-slate-200 dark:text-slate-800 font-black uppercase tracking-[1em] text-[10px]">
-          Linen Rent Hub Systems
+
+        <div className="mt-16 pb-12 text-center text-slate-300 dark:text-slate-600 font-black uppercase tracking-[0.6em] md:tracking-[1em] text-[10px] relative z-10">
+          ClosetRush Rent Systems • Premium Edition
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 const ThemeToggle = ({ darkMode, setDarkMode }) => {
   return (
     <label className="flex items-center gap-4 cursor-pointer group" aria-label="Toggle Theme">
-      <span className={`text-[9px] font-black uppercase tracking-[0.3em] transition-all duration-500 italic ${!darkMode ? 'text-indigo-600 scale-110' : 'text-slate-400 opacity-50'}`}>Alpha</span>
       <div className="relative">
         <input 
           type="checkbox" 
@@ -23,7 +22,6 @@ const ThemeToggle = ({ darkMode, setDarkMode }) => {
           </div>
         </div>
       </div>
-      <span className={`text-[9px] font-black uppercase tracking-[0.3em] transition-all duration-500 italic ${darkMode ? 'text-indigo-400 scale-110' : 'text-slate-400 opacity-50'}`}>Omega</span>
     </label>
   );
 };
