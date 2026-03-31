@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { Loader2, ArrowLeft, Star, ShieldCheck, Truck, RefreshCw, ShoppingBag, CheckCircle, Heart, Share2, Info, ChevronRight, ArrowRight } from 'lucide-react';
+import { LuLoaderCircle, LuArrowLeft, LuStar, LuShieldCheck, LuTruck, LuRefreshCw, LuShoppingBag, LuCircleCheck, LuHeart, LuShare2, LuInfo, LuChevronRight, LuArrowRight } from 'react-icons/lu';
 import toast from 'react-hot-toast';
 
-const MOCK_ITEMS = [
-   { id: 1, name: 'The Classic Single Bed Set', category: 'Bedding', description: 'Fresh, crisp cotton tailored for your modern single bed. A tactile essential.', price: 49, img: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800', specs: { material: '100% Egyptian Cotton', threadCount: '400 TC', size: '90x190 cm', weight: '1.2kg' } },
-   { id: 2, name: 'Signature Double Sheets', category: 'Bedding', description: 'Expansive, luxurious feel with our premium double bed weave. Rest effortlessly.', price: 89, img: '/items/double_bed.png', specs: { material: 'Pima Cotton', threadCount: '600 TC', size: '200x200 cm', weight: '2.5kg' } },
-   { id: 3, name: 'Oxford Pillow Slips', category: 'Pillow Covers', description: 'Twin set of finely detailed, breathable cotton pillow covers.', price: 29, img: 'https://images.unsplash.com/photo-1580301762395-21ce84d00bc6?w=800', specs: { material: 'Percale Cotton', threadCount: '300 TC', size: '50x75 cm', weight: '0.4kg' } },
-   { id: 4, name: 'Velvet Throw Pillow Cover', category: 'Pillow Covers', description: 'Deep-pile velvet with a hand-finished edge. Pure editorial comfort.', price: 35, img: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800', specs: { material: 'Crushed Velvet', threadCount: 'N/A', size: '45x45 cm', weight: '0.6kg' } },
-   { id: 5, name: 'Minimalist Sofa Throw', category: 'Sofa Covers', description: 'Drape your living space in structural warmth with our signature throw.', price: 110, img: 'https://images.unsplash.com/photo-1512331283953-19967202237d?w=800', specs: { material: 'Merino Wool Blend', threadCount: 'N/A', size: '150x200 cm', weight: '1.8kg' } },
-   { id: 6, name: 'Linen Sectional Cover', category: 'Sofa Covers', description: 'Complete coverage in natural, earthy tones for a cohesive aesthetic.', price: 149, img: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=800', specs: { material: 'Pure Belgian Linen', threadCount: 'N/A', size: '300x400 cm', weight: '4.5kg' } },
-];
+
 
 const ProductDetails = () => {
    const { id } = useParams();
@@ -48,13 +41,7 @@ const ProductDetails = () => {
                specs: data.specs || { material: 'Premium Cotton Blend', threadCount: '300 TC', size: 'Universal', weight: 'Standard' }
             });
          } catch (error) {
-            // Fallback to MOCK_ITEMS if server fails or item not found in DB
-            const mockItem = MOCK_ITEMS.find(m => m.id.toString() === id.toString());
-            if (mockItem) {
-               setItem({ ...mockItem, price: `₹${mockItem.price}` });
-            } else {
-               toast.error('Product not found in our collection');
-            }
+            toast.error('Product not found in our collection');
          } finally {
             setLoading(false);
             window.scrollTo(0, 0);
@@ -77,10 +64,10 @@ const ProductDetails = () => {
    if (!item) return (
       <div className="pt-40 text-center min-h-screen bg-[#f8f9fa] dark:bg-[#0F172A]">
          <div className="max-w-md mx-auto px-6">
-            <Info className="mx-auto text-slate-300 mb-8" size={64} />
+            <LuInfo className="mx-auto text-slate-300 mb-8" size={64} />
             <h2 className="text-4xl font-serif italic text-slate-400 mb-4 tracking-tighter">Essential not found.</h2>
             <p className="text-sm text-slate-500 font-bold uppercase tracking-widest mb-12">The item may have been moved or is currently in circulation.</p>
-            <button onClick={() => navigate('/browse')} className="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-black uppercase tracking-[0.3em] text-[10px] transform hover:scale-105 transition-all shadow-xl">Return to Browse</button>
+            <button onClick={() => navigate('/packages')} className="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-black uppercase tracking-[0.3em] text-[10px] transform hover:scale-105 transition-all shadow-xl">Back to Packages</button>
          </div>
       </div>
    );
@@ -99,7 +86,7 @@ const ProductDetails = () => {
             fontWeight: '900',
             padding: '20px 30px'
          },
-         icon: <CheckCircle size={16} className="text-emerald-400" />
+         icon: <LuCircleCheck size={16} className="text-emerald-400" />
       });
    };
 
@@ -111,15 +98,15 @@ const ProductDetails = () => {
                onClick={() => navigate(-1)}
                className="group flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all underline underline-offset-8 decoration-transparent hover:decoration-emerald-500"
             >
-               <ArrowLeft size={14} className="group-hover:-translate-x-2 transition-transform" />
+               <LuArrowLeft size={14} className="group-hover:-translate-x-2 transition-transform" />
                The Catalogue
             </button>
             <div className="flex items-center gap-8">
                <button onClick={() => setIsWishlisted(!isWishlisted)} className={`transition-colors ${isWishlisted ? 'text-red-500' : 'text-slate-300 hover:text-slate-900'}`}>
-                  <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
+                  <LuHeart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
                </button>
                <button className="text-slate-300 hover:text-slate-900 transition-colors">
-                  <Share2 size={20} />
+                  <LuShare2 size={20} />
                </button>
             </div>
          </div>
@@ -157,7 +144,7 @@ const ProductDetails = () => {
                            <span>{item.category}</span>
                            <div className="w-1.5 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full" />
                            <div className="flex items-center gap-1">
-                              <Star size={12} fill="currentColor" />
+                              <LuStar size={12} fill="currentColor" />
                               <span>4.9 / 5</span>
                            </div>
                         </div>
@@ -198,21 +185,21 @@ const ProductDetails = () => {
                            className="w-full bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-black py-8 rounded-[3.5rem] transition-all shadow-3xl transform active:scale-95 text-[10px] uppercase tracking-[0.6em] flex items-center justify-center gap-6 group"
                         >
                            Reserve this Piece
-                           <ShoppingBag size={18} className="group-hover:rotate-12 transition-transform" />
+                           <LuShoppingBag size={18} className="group-hover:rotate-12 transition-transform" />
                         </button>
                      </div>
 
                      <div className="grid grid-cols-3 gap-4">
                         <div className="flex flex-col items-center p-6 bg-slate-50 dark:bg-white/5 rounded-[2rem] text-center">
-                           <ShieldCheck className="text-emerald-500 mb-3" size={24} />
+                           <LuShieldCheck className="text-emerald-500 mb-3" size={24} />
                            <span className="text-[8px] font-black uppercase tracking-widest leading-normal">Eco Sanity <br />Certified</span>
                         </div>
                         <div className="flex flex-col items-center p-6 bg-slate-50 dark:bg-white/5 rounded-[2rem] text-center">
-                           <Truck className="text-emerald-500 mb-3" size={24} />
+                           <LuTruck className="text-emerald-500 mb-3" size={24} />
                            <span className="text-[8px] font-black uppercase tracking-widest leading-normal">Student <br />Priority</span>
                         </div>
                         <div className="flex flex-col items-center p-6 bg-slate-50 dark:bg-white/5 rounded-[2rem] text-center">
-                           <RefreshCw className="text-emerald-500 mb-3" size={24} />
+                           <LuRefreshCw className="text-emerald-500 mb-3" size={24} />
                            <span className="text-[8px] font-black uppercase tracking-widest leading-normal">Weekly <br />Exchange</span>
                         </div>
                      </div>
@@ -263,7 +250,7 @@ const ProductDetails = () => {
                                     We deliver to all major student residences every Tuesday and Friday. Tracking will be available in your dashboard upon confirmation.
                                  </p>
                                  <div className="flex items-center gap-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl">
-                                    <Info size={16} className="text-emerald-600" />
+                                    <LuInfo size={16} className="text-emerald-600" />
                                     <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Order by 6PM for next window delivery.</span>
                                  </div>
                               </div>
@@ -280,26 +267,15 @@ const ProductDetails = () => {
                      <span className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.5em]">You might also enjoy</span>
                      <h2 className="text-5xl font-black italic tracking-tighter uppercase">Completing the edit.</h2>
                   </div>
-                  <button onClick={() => navigate('/browse')} className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-slate-900 transition-all">
-                     Browse All <ChevronRight size={16} />
+                  <button onClick={() => navigate('/packages')} className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-slate-900 transition-all">
+                     Explore Packages <LuChevronRight size={16} />
                   </button>
                </div>
-               <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                  {MOCK_ITEMS.filter(m => m.id.toString() !== id.toString()).slice(0, 3).map((m) => (
-                     <div
-                        key={m.id}
-                        onClick={() => navigate(`/product/${m.id}`)}
-                        className="group cursor-pointer space-y-6"
-                     >
-                        <div className="relative aspect-square rounded-[3rem] overflow-hidden bg-slate-100 dark:bg-white/5">
-                           <img src={m.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                        </div>
-                        <div className="space-y-2">
-                           <p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">{m.category}</p>
-                           <h3 className="text-2xl font-serif italic text-slate-900 dark:text-white transition-colors">{m.name}</h3>
-                        </div>
-                     </div>
-                  ))}
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mt-12">
+                  <div className="p-12 bg-white dark:bg-white/5 rounded-[3rem] border border-slate-100 dark:border-white/10 text-center flex flex-col items-center justify-center space-y-4">
+                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Discover More</p>
+                     <button onClick={() => navigate('/packages')} className="flex items-center gap-4 text-sm font-black uppercase tracking-widest text-emerald-500 hover:scale-105 transition-all">View All Packages <LuArrowRight /></button>
+                  </div>
                </div>
             </section>
          </div>

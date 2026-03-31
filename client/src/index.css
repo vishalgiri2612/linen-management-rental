@@ -271,3 +271,24 @@ html.dark body {
 .btn--huge:hover .btn--huge__text span {
   width: 100%;
 }
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+.shadow-3xl {
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+}
+
+.dark .shadow-3xl {
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.5);
+}

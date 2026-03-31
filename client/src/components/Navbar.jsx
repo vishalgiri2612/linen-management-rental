@@ -1,75 +1,121 @@
-import { Link } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
-import { useCart } from '../context/CartContext';
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { LuShoppingCart, LuLogOut, LuUser, LuMenu, LuX } from 'react-icons/lu';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const Navbar = ({ darkMode, setDarkMode, selectedCity, onCityClick }) => {
-  const { cartCount } = useCart();
-  const { user, isAuthenticated, logout } = useAuth();
+const Navbar = () => {
+  const { user, logout } = useAuth();
+  const { cart } = useCart();
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Packages', path: '/packages' },
+    { name: 'How It Works', path: '/how-it-works' },
+    { name: 'Clean Promise', path: '/clean-promise' },
+    { name: 'About', path: '/about' },
+  ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 dark:bg-[#0F172A]/70 backdrop-blur-3xl border-b border-slate-100 dark:border-slate-800 transition-all duration-500">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-24">
-          <div className="flex items-center gap-16">
-            <Link to="/" className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter uppercase italic flex items-center gap-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
-              ClosetRush<span className="text-slate-900 dark:text-white">.</span>
-            </Link>
-
-            {/* Location Selector */}
-            <button
-              onClick={onCityClick}
-              className="hidden lg:flex items-center gap-3 group px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-white/5 rounded-full transition-all border border-slate-100 dark:border-white/5 shadow-sm"
-            >
-              <div className="w-2 h-2 bg-emerald-500 rounded-full group-hover:animate-ping" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
-                {selectedCity || 'Locate'}
-              </span>
-            </button>
-          </div>
-
-          <div className="flex items-center gap-10">
-            <div className="hidden md:flex items-center gap-12 mr-6 text-slate-900 dark:text-white">
-              <Link to="/browse" className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all transform hover:-translate-y-0.5">Catalogue</Link>
-              <Link to="/dashboard" className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all transform hover:-translate-y-0.5">Dashboard</Link>
+    <nav className="fixed top-0 left-0 w-full z-50 py-8 px-6 lg:px-12 pointer-events-none">
+      <div className="max-w-7xl mx-auto flex items-center justify-between p-6 bg-[#1A3263] text-[#EFD2B0] shadow-[30px_30px_60px_-15px_rgba(26,50,99,0.4)] border border-white/5 pointer-events-auto">
+        <div className="flex items-center gap-16">
+          <Link to="/" className="text-xl font-serif italic tracking-tighter uppercase group flex items-center gap-2">
+            <div className="w-8 h-8 bg-[#FFC570] flex items-center justify-center transform group-hover:rotate-45 transition-transform duration-500">
+              <span className="text-[#1A3263] font-bold rotate-[-45] group-hover:rotate-0 transition-transform">C</span>
             </div>
-
-            <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
-
-            <Link to="/cart" className="relative p-4 text-slate-900 dark:text-white group bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-2xl hover:bg-slate-900 dark:hover:bg-white hover:text-white dark:hover:text-black transition-all">
-              <svg className="w-5 h-5 stroke-[2.5] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-              <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-[8px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-[#0F172A] shadow-lg">
-                {cartCount}
-              </span>
-            </Link>
-
-            <div className="flex items-center gap-6 pl-8 border-l border-slate-100 dark:border-white/5">
-              {isAuthenticated ? (
-                <div className="flex items-center gap-6">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-indigo-600 hidden sm:inline-block">
-                    {user?.name?.split(' ')[0]}
-                  </span>
-                  <button
-                    onClick={logout}
-                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all underline underline-offset-[12px] decoration-indigo-600"
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <Link to="/login" className="relative px-12 py-4 group overflow-hidden rounded-full shadow-lg transition-all active:scale-95">
-                  <div className="absolute inset-0 bg-emerald-600 group-hover:bg-emerald-700 transition-all" />
-                  <span className="relative z-10 text-white text-[10px] font-black uppercase tracking-[0.2em] transition-colors" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                    Join Us
-                  </span>
-                </Link>
-              )}
-            </div>
+            Closet<span className="opacity-40 group-hover:opacity-100 transition-opacity">Rush</span>
+          </Link>
+          
+          <div className="hidden lg:flex items-center gap-10">
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name} 
+                to={link.path}
+                className={`text-[10px] font-bold uppercase tracking-[0.4em] transition-all hover:text-[#FFC570] ${location.pathname === link.path ? 'text-[#FFC570]' : 'text-[#EFD2B0]/50'}`}
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
         </div>
+
+        <div className="flex items-center gap-10">
+          <Link to="/cart" className="relative group">
+            <LuShoppingCart className="w-5 h-5 text-[#EFD2B0]/80 group-hover:text-[#FFC570] transition-colors" />
+            {cartCount > 0 && (
+              <span className="absolute -top-3 -right-3 bg-[#FFC570] text-[#1A3263] text-[9px] font-bold h-5 w-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
+          {user ? (
+            <div className="flex items-center gap-8">
+              <Link to="/dashboard" className="text-[10px] font-bold uppercase tracking-[0.2em] border-b border-[#FFC570]/0 hover:border-[#FFC570]/100 transition-all pb-1">
+                Account
+              </Link>
+              <button 
+                onClick={logout}
+                className="opacity-40 hover:opacity-100 transition-opacity"
+              >
+                <LuLogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="px-8 py-3 bg-[#FFC570] text-[#1A3263] font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-white transition-all">
+              Login
+            </Link>
+          )}
+
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="lg:hidden"
+          >
+            {isOpen ? <LuX className="w-6 h-6" /> : <LuMenu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="lg:hidden absolute top-32 left-6 right-6 bg-[#1A3263] p-12 border border-white/5 shadow-2xl z-[60] pointer-events-auto"
+          >
+            <div className="flex flex-col gap-12 text-center">
+              {navLinks.map((link) => (
+                <Link 
+                  key={link.name} 
+                  to={link.path} 
+                  onClick={() => setIsOpen(false)}
+                  className="text-3xl font-serif italic text-white uppercase tracking-tighter"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              
+              <div className="h-px bg-white/10" />
+              
+              <Link 
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="text-[11px] font-bold uppercase tracking-[0.4em] text-[#FFC570]"
+              >
+                Access Portal
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

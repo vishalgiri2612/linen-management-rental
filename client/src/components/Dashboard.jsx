@@ -1,254 +1,274 @@
-import React from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { LuPackage, LuCalendar, LuClock, LuRefreshCcw, LuMapPin, LuSettings, LuPause, LuCircleX, LuCreditCard, LuShieldCheck } from 'react-icons/lu';
 import { useAuth } from '../context/AuthContext';
-import { ShoppingBag, Star, Zap, Gem, Leaf, Wind, Bed, Sofa, ArrowUpRight, ArrowRight, Clock, Box, ShieldCheck, User, Settings, CreditCard, LogOut } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
-   const { user, isAuthenticated, token, logout } = useAuth();
-   const navigate = useNavigate();
-   const [rentals, setRentals] = React.useState([]);
-   const [loading, setLoading] = React.useState(true);
+  const { user } = useAuth();
+  const [orders, setOrders] = useState([]);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-   React.useEffect(() => {
-      const fetchRentals = async () => {
-         try {
-            const response = await fetch('http://localhost:5000/api/rent/my-rentals', {
-               headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            setRentals(data);
-         } catch (error) {
-            console.error('Failed to fetch rentals');
-         } finally {
-            setLoading(false);
-         }
-      };
-      if (isAuthenticated) fetchRentals();
-   }, [token, isAuthenticated]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
 
-   if (!isAuthenticated) {
-      return <Navigate to="/login" replace />;
-   }
+      try {
+        // Fetch Profile
+        const profRes = await fetch('http://localhost:5000/api/auth/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const profData = await profRes.json();
+        setProfile(profData);
 
-   return (
-      <div className="min-h-screen bg-[#f8f9fa] dark:bg-[#0F172A] text-[#191c1d] dark:text-[#f8fafc] pt-24 pb-32 transition-colors duration-700 selection:bg-emerald-100">
+        // Fetch Rentals
+        const rentRes = await fetch('http://localhost:5000/api/rent/my', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const rentData = await rentRes.json();
+        setOrders(rentData);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-         {/* Floating Modern Navigation Header */}
-         <nav className="fixed top-0 left-0 right-0 z-50 bg-white/60 dark:bg-black/40 backdrop-blur-2xl border-b border-[#c7c4d7]/15">
-            <div className="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
-               <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-emerald-600 dark:bg-emerald-500 rounded-2xl flex items-center justify-center text-white text-lg font-black italic shadow-lg shadow-emerald-500/20">C</div>
-                  <span className="text-xl font-black italic uppercase tracking-tighter">
-                     <span className="text-emerald-600 dark:text-emerald-400">ClosetRush</span>
-                     <span className="text-slate-900 dark:text-white">.</span>
-                  </span>
-               </div>
-               <div className="flex items-center gap-8">
-                  <Link to="/browse" className="text-[10px] font-black uppercase tracking-[0.3em] hover:text-[#059669] transition-colors">Catalogue</Link>
-                  <button onClick={logout} className="text-[10px] font-black uppercase tracking-[0.3em] text-[#464554] hover:text-red-500 transition-colors flex items-center gap-2">
-                     <LogOut size={14} /> Exit
-                  </button>
-               </div>
+    fetchData();
+  }, []);
+
+  const handleUpdateStatus = async (orderId, newStatus) => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`http://localhost:5000/api/rent/status/${orderId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (res.ok) {
+        setOrders(prev => prev.map(o => o._id === orderId ? { ...o, status: newStatus } : o));
+        toast.success(`Plan ${newStatus} successfully`);
+      }
+    } catch (err) {
+      toast.error('Failed to update plan status');
+    }
+  };
+
+  const handleRaiseRequest = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch('http://localhost:5000/api/support/request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ type: 'Replacement', description: 'Urgent swap requested from dashboard' })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message, { icon: '🛡️' });
+      }
+    } catch (err) {
+      toast.error('Request failed');
+    }
+  };
+
+  const handleUpdateAddress = () => {
+    toast('Address updates coming soon to mobile app!', { icon: '📍' });
+  };
+
+  if (loading) return (
+    <div className="pt-60 pb-24 text-center">
+      <div className="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
+      <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">Synchronizing Vault...</p>
+    </div>
+  );
+
+  const activeOrder = orders.find(o => o.status === 'active' || o.status === 'pending') || orders[0];
+
+  return (
+    <div className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-16">
+        <div>
+           <motion.span 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-4 block underline underline-offset-8 decoration-indigo-500 decoration-4"
+           >
+              Welcome back
+           </motion.span>
+           <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white italic tracking-tighter uppercase leading-[0.85]"
+           >
+              {profile?.name || user?.name || 'Student'}<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-indigo-500">.</span>
+           </motion.h1>
+        </div>
+        <div className="flex gap-4">
+           <button 
+              onClick={() => toast.success('Billing portal active')}
+              className="px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-2xl hover:scale-105 active:scale-95 transition-all"
+           >
+              Manage Billing
+           </button>
+           <button className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-900 dark:text-white">
+              <LuSettings className="w-5 h-5" />
+           </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
+         {/* Active Plan Card */}
+         <div className="lg:col-span-2 p-10 md:p-14 bg-slate-900 dark:bg-white rounded-[3.5rem] relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-[40%] h-full bg-emerald-500/10 backdrop-blur-3xl -skew-x-12 translate-x-1/2 p-12 flex flex-col items-end justify-center">
+               <LuShieldCheck className="w-32 h-32 text-emerald-500/20 mb-8" />
             </div>
-         </nav>
-
-         <div className="max-w-[1600px] mx-auto px-6 sm:px-12 lg:px-20 mt-16 animate-fade-in opacity-0" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-
-            {/* Welcome Header */}
-            <header className="mb-24">
-               <p className="text-[#059669] font-black text-[10px] uppercase tracking-[0.6em] mb-6">Personal Atelier</p>
-               <div className="flex flex-col md:flex-row justify-between items-end gap-12">
-                  <div>
-                     <h1 className="text-[clamp(3rem,6vw,5rem)] font-serif italic leading-none tracking-tighter">
-                        Good Morning, <br />
-                        <span className="font-sans font-black not-italic text-[#191c1d] dark:text-white">{user?.name?.split(' ')[0]}.</span>
-                     </h1>
-                  </div>
-                  <div className="flex items-center gap-6">
-                     <div className="text-right">
-                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#c7c4d7] mb-1">Total Curated</p>
-                        <p className="text-2xl font-black italic leading-none">₹1,240 <span className="text-xs non-italic text-[#c7c4d7] tracking-normal font-normal">/mo</span></p>
-                     </div>
-                     <div className="w-px h-12 bg-[#c7c4d7]/30" />
-                     <div className="text-right">
-                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#c7c4d7] mb-1">Impact Grade</p>
-                        <p className="text-2xl font-black text-emerald-500 leading-none">A+</p>
-                     </div>
-                  </div>
+            
+            <div className="relative z-10">
+               <div className="inline-flex items-center gap-3 px-6 py-2 bg-emerald-500/20 text-emerald-500 rounded-full mb-8 border border-emerald-500/20">
+                  <LuPackage className="w-4 h-4" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">Active Subscription</span>
                </div>
-            </header>
-
-            <div className="grid grid-cols-12 gap-8 lg:gap-12">
-
-               {/* Sidebar Area: User & Settings */}
-               <aside className="col-span-12 lg:col-span-4 space-y-12">
-                  {/* Profile Card */}
-                  <div className="p-12 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[3.5rem] space-y-12 shadow-2xl shadow-emerald-900/5">
-                     <div className="flex flex-col items-center text-center space-y-6">
-                        <div className="relative group">
-                           <div className="absolute inset-0 bg-[#059669] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
-                           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} className="w-32 h-32 rounded-full border-4 border-white relative z-10 shadow-2xl" alt="Avatar" />
-                        </div>
-                        <div>
-                           <h4 className="text-2xl font-black tracking-tighter">{user?.name}</h4>
-                           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#059669] mt-2">Certified Resident</p>
-                        </div>
-                     </div>
-
-                     <div className="w-full h-px bg-[#c7c4d7]/15" />
-
-                     <nav className="space-y-4">
-                        {[
-                           { label: 'Profile Details', icon: <User size={16} /> },
-                           { label: 'Billing Atelier', icon: <CreditCard size={16} /> },
-                           { label: 'Preferences', icon: <Settings size={16} /> },
-                           { label: 'Account Security', icon: <ShieldCheck size={16} /> },
-                        ].map((item, i) => (
-                           <button key={i} className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-[#edeeef] dark:hover:bg-white/5 transition-colors group">
-                              <div className="flex items-center gap-4 text-[#464554] dark:text-white group-hover:text-[#059669]">
-                                 {item.icon}
-                                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">{item.label}</span>
-                              </div>
-                              <ArrowRight size={14} className="text-[#c7c4d7] opacity-0 group-hover:opacity-100 transition-all" />
-                           </button>
-                        ))}
-                     </nav>
-
-                     <div className="p-8 bg-[#059669]/5 rounded-[2.5rem] border border-[#059669]/10 space-y-4">
-                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#059669]">Atelier Service</p>
-                        <p className="text-xs text-[#464554] dark:text-slate-400 font-normal leading-relaxed">Your subscription tier allows for premium linen swaps every 14 days.</p>
-                     </div>
-                  </div>
-
-                  {/* Support/Eco Card */}
-                  <div className="p-12 bg-[#191c1d] text-white rounded-[3.5rem] space-y-8 relative overflow-hidden">
-                     <div className="relative z-10 space-y-6">
-                        <Leaf size={32} className="text-emerald-400" />
-                        <h4 className="text-3xl font-serif italic">Living Leaf.</h4>
-                        <p className="text-sm text-white/60 font-normal leading-relaxed">Your choice of rental vs purchase has saved approximately <span className="text-white font-bold">12,000 liters</span> of water this month.</p>
-                        <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-emerald-400 hover:text-white transition-colors">Download Impact Report <ArrowUpRight size={14} /></button>
-                     </div>
-                     {/* Subtle Glow */}
-                     <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[80%] bg-emerald-500/10 blur-[100px] rounded-full" />
-                  </div>
-               </aside>
-
-               {/* Main Content Area: Bento Grid */}
-               <div className="col-span-12 lg:col-span-8 space-y-12">
-
-                  {/* The Featured Collection Card (The "Active" piece) */}
-                  <div className="group relative overflow-hidden rounded-[3.5rem] bg-[#edeeef] dark:bg-white/5 aspect-[21/10] md:aspect-[21/9] flex items-center p-12 lg:p-20 transition-all duration-700 hover:shadow-2xl hover:shadow-emerald-500/5">
-                     <div className="relative z-10 max-w-md space-y-8">
-                        <div className="flex items-center gap-3">
-                           <span className="w-2 h-2 bg-[#059669] rounded-full animate-pulse" />
-                           <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#464554]">Currently Managed</span>
-                        </div>
-                        <h3 className="text-5xl font-serif italic leading-tight text-[#191c1d] dark:text-white">The Egyptian <br /> Cotton Set.</h3>
-                        <p className="text-sm text-[#464554] dark:text-slate-400 font-normal leading-relaxed">Your signature collection is currently active. Next scheduled cycle is January 14th.</p>
-                        <div className="flex gap-4">
-                           <button className="px-10 py-5 bg-[#059669] text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:bg-[#047857] transition-all shadow-xl shadow-emerald-600/20 active:scale-95">Manage Edit</button>
-                           <button className="px-8 py-5 border border-[#c7c4d7] rounded-full font-black text-[10px] uppercase tracking-[0.4em] hover:bg-[#191c1d] hover:text-white hover:border-[#191c1d] transition-all active:scale-95">Archive</button>
-                        </div>
-                     </div>
-
-                     {/* Decorative Element */}
-                     <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden pointer-events-none opacity-20 group-hover:opacity-40 transition-opacity duration-1000 grayscale group-hover:grayscale-0">
-                        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800" className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000" alt="Fabric" />
-                     </div>
-                  </div>
-
-                  {/* Sub-Metrics Bento */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-                     {/* Trackers Tonal Card */}
-                     <div className="p-12 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[3rem] space-y-10 group hover:border-[#059669]/30 transition-all">
-                        <div className="flex justify-between items-center">
-                           <Clock className="text-[#059669]" size={20} />
-                           <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#c7c4d7]">Timeline</span>
-                        </div>
-                        <div className="space-y-2">
-                           <p className="text-4xl font-black italic">12 Days</p>
-                           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#464554]">Until Next Refresh</p>
-                        </div>
-                        <div className="w-full bg-[#edeeef] dark:bg-white/10 h-px" />
-                        <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
-                           <span className="text-[#c7c4d7]">Jan 02</span>
-                           <span className="text-emerald-500">Jan 14</span>
-                        </div>
-                     </div>
-
-                     {/* Loyalty Tonal Card */}
-                     <div className="p-12 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[3rem] space-y-10 group hover:border-emerald-500/30 transition-all">
-                        <div className="flex justify-between items-center">
-                           <Gem className="text-pink-400" size={20} />
-                           <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#c7c4d7]">Archive Points</span>
-                        </div>
-                        <div className="space-y-2">
-                           <p className="text-4xl font-black italic">2.4k pts</p>
-                           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#464554]">Master Textile Tier</p>
-                        </div>
-                        <div className="w-full bg-[#edeeef] dark:bg-white/10 h-px" />
-                        <button className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.4em] text-pink-400 group-hover:translate-x-1 transition-transform">
-                           Redeem Collection <ArrowUpRight size={14} />
-                        </button>
-                     </div>
-                  </div>
-
-                  {/* The Interior Log (Past Orders) */}
-                  <section className="space-y-12">
-                     <div className="flex items-center justify-between border-b border-[#c7c4d7]/15 pb-8 px-2">
-                        <h2 className="text-2xl font-serif italic">Interior Log.</h2>
-                        <button className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c7c4d7] hover:text-[#191c1d] transition-colors">View All Archive</button>
-                     </div>
-
-                     <div className="space-y-6">
-                        {loading ? (
-                           <div className="py-20 text-center text-[10px] font-black uppercase tracking-[0.5em] text-[#c7c4d7]">Decrypting archive...</div>
-                        ) : rentals.length === 0 ? (
-                           <div className="p-16 border-2 border-dashed border-[#c7c4d7]/30 rounded-[3rem] text-center space-y-8">
-                              <p className="text-lg font-serif italic text-[#c7c4d7]">No previous selections found.</p>
-                              <Link to="/browse" className="inline-block px-12 py-5 bg-[#191c1d] text-white rounded-full font-black text-[10px] uppercase tracking-[0.4em]">Start Curation</Link>
-                           </div>
-                        ) : (
-                           rentals.map((rental, i) => (
-                              <div
-                                 key={i}
-                                 onClick={() => navigate(`/product/${rental.itemId?._id || rental.itemId}`)}
-                                 className="flex items-center justify-between p-8 bg-white dark:bg-white/5 border border-[#c7c4d7]/15 rounded-[2.5rem] group hover:border-emerald-500/30 transition-all cursor-pointer"
-                              >
-                                 <div className="flex items-center gap-8">
-                                    <div className="w-20 h-20 rounded-[1.5rem] bg-[#edeeef] overflow-hidden">
-                                       <img src={rental.itemId?.imageUrl || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=200'} className="w-full h-full object-cover" alt="Item" />
-                                    </div>
-                                    <div>
-                                       <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#059669] mb-2">{rental.bookingStatus}</p>
-                                       <h4 className="text-xl font-black">{rental.itemId?.itemName || 'Selected Linen Piece'}</h4>
-                                       <p className="text-[10px] font-black uppercase tracking-[0.1em] text-[#c7c4d7]">{new Date(rental.startDate).toLocaleDateString()} - {new Date(rental.endDate).toLocaleDateString()}</p>
-                                    </div>
-                                 </div>
-                                 <div className="w-12 h-12 rounded-full border border-[#c7c4d7] flex items-center justify-center text-[#191c1d] dark:text-white group-hover:bg-[#191c1d] group-hover:text-white transition-all">
-                                    <ArrowUpRight size={18} />
-                                 </div>
-                              </div>
-                           ))
-                        )}
-                     </div>
-                  </section>
-               </div>
+               {activeOrder ? (
+                 <>
+                   <h2 className="text-4xl md:text-6xl font-black text-white dark:text-slate-900 mb-4 uppercase italic tracking-tighter uppercase leading-tight">
+                     {activeOrder.item?.itemName?.split(' ')[0]} <br />
+                     <span className="text-emerald-500 italic">{activeOrder.item?.itemName?.split(' ').slice(1).join(' ')}</span>
+                   </h2>
+                   <p className="text-slate-400 dark:text-slate-500 text-lg font-medium italic mb-12">
+                     Next Swap: {new Date(activeOrder.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                   </p>
+                   
+                   <div className="flex flex-wrap gap-4">
+                      <button 
+                        onClick={() => handleUpdateStatus(activeOrder._id, activeOrder.status === 'paused' ? 'active' : 'paused')}
+                        className="px-8 py-5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center gap-3 shadow-2xl transition-all hover:scale-105"
+                      >
+                         <LuPause className={`w-4 h-4 ${activeOrder.status === 'paused' ? 'fill-emerald-500 text-emerald-500' : 'fill-slate-900 dark:fill-white'}`} /> 
+                         {activeOrder.status === 'paused' ? 'Resume Plan' : 'Pause Plan'}
+                      </button>
+                      <button 
+                        onClick={() => handleUpdateStatus(activeOrder._id, 'cancelled')}
+                        className="px-8 py-5 bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 rounded-[1.5rem] font-black uppercase tracking-widest text-[10px] flex items-center gap-3 transition-all hover:scale-105"
+                      >
+                         <LuCircleX className="w-4 h-4" /> Cancel Plan
+                      </button>
+                   </div>
+                 </>
+               ) : (
+                 <div className="py-12">
+                    <h3 className="text-3xl font-black text-white uppercase italic">No Active Plan</h3>
+                    <p className="text-slate-400 mt-4 italic mb-10">Start your elite journey by choosing a collection.</p>
+                 </div>
+               )}
             </div>
          </div>
 
-         <style dangerouslySetInnerHTML={{
-            __html: `
-        @keyframes fade-in {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}} />
+         {/* Stats Card */}
+         <div className="p-10 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[3.5rem] flex flex-col justify-between shadow-2xl shadow-slate-200/50 dark:shadow-none">
+            <div className="space-y-8">
+               <div className="flex justify-between items-center group cursor-pointer hover:translate-x-2 transition-transform">
+                  <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-indigo-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center">
+                         <LuRefreshCcw className="w-6 h-6 text-indigo-500" />
+                      </div>
+                      <div>
+                         <p className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400">Total Orders</p>
+                         <p className="text-xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter">{orders.length} Hits</p>
+                      </div>
+                  </div>
+               </div>
+
+               <div className="w-full h-px bg-slate-50 dark:bg-slate-800" />
+
+               <div className="flex justify-between items-center group cursor-pointer hover:translate-x-2 transition-transform">
+                  <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-rose-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center">
+                         <LuCreditCard className="w-6 h-6 text-rose-500" />
+                      </div>
+                      <div>
+                         <p className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400">Est. Billing</p>
+                         <p className="text-xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter">₹{orders.reduce((acc, curr) => acc + (curr.item?.pricePerWeek || 0), 0)} Paid</p>
+                      </div>
+                  </div>
+               </div>
+
+               <div className="w-full h-px bg-slate-50 dark:bg-slate-800" />
+
+               <div className="flex justify-between items-center group cursor-pointer hover:translate-x-2 transition-transform">
+                  <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-emerald-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center">
+                         <LuMapPin className="w-6 h-6 text-emerald-500" />
+                      </div>
+                      <div>
+                         <p className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400">Primary Hostel</p>
+                         <p className="text-xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter">{profile?.address?.hostel || 'IIT Delhi, Nilgiri'}</p>
+                      </div>
+                  </div>
+               </div>
+            </div>
+
+            <button 
+              onClick={handleUpdateAddress}
+              className="w-full py-5 border border-indigo-100 dark:border-indigo-500/20 text-indigo-500 rounded-3xl font-black uppercase tracking-widest text-[10px] hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all mt-8"
+            >
+               Update Address
+            </button>
+         </div>
       </div>
-   );
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+         <div className="p-10 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[3.5rem] shadow-2xl shadow-slate-200/50 dark:shadow-none">
+            <div className="flex justify-between items-center mb-10">
+               <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter">Delivery History</h3>
+               <button className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500">View All</button>
+            </div>
+            <div className="space-y-6">
+               {orders.length === 0 ? (
+                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 text-center py-10 italic">No history recorded.</p>
+               ) : (
+                 orders.map((order, i) => (
+                    <div key={i} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-between group hover:border-emerald-500/30 transition-all border border-transparent">
+                       <div className="flex items-center gap-6">
+                          <div className="w-12 h-12 bg-white dark:bg-slate-900 rounded-2xl flex items-center justify-center">
+                             <LuPackage className="w-5 h-5 text-slate-400" />
+                          </div>
+                          <div>
+                             <p className="font-black text-slate-900 dark:text-white uppercase text-xs italic">{order._id.slice(-6).toUpperCase()} • {order.item?.itemName}</p>
+                             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">{new Date(order.createdAt).toLocaleDateString()}</p>
+                          </div>
+                       </div>
+                       <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full animate-pulse ${order.status === 'active' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                          <span className={`text-[10px] font-black uppercase tracking-widest ${order.status === 'active' ? 'text-emerald-500' : 'text-amber-500'}`}>{order.status}</span>
+                       </div>
+                    </div>
+                 ))
+               )}
+            </div>
+         </div>
+
+         <div className="p-12 bg-indigo-50 dark:bg-slate-900 border border-indigo-100 dark:border-indigo-500/20 rounded-[3.5rem] flex flex-col items-center justify-center text-center">
+            <LuRefreshCcw className="w-16 h-16 text-indigo-500 mb-8 animate-spin-slow" />
+            <h3 className="text-3xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter mb-4 italic leading-tight">Need a Replacement?</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium italic mb-10 max-w-sm">Spilled coffee? No problem. Raise an urgent replacement request and we'll swap it within 4 hours.</p>
+            <button 
+              onClick={handleRaiseRequest}
+              className="px-12 py-5 bg-indigo-500 text-white rounded-full font-black uppercase tracking-widest text-[10px] shadow-2xl shadow-indigo-500/30 transition-all hover:scale-105 active:scale-95"
+            >
+               Raise Request
+            </button>
+         </div>
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;

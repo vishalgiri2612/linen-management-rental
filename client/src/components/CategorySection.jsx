@@ -1,21 +1,22 @@
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
-  Bed,
-  Wind,
-  Sparkles,
-  Box,
-  Sofa,
-  Layers,
-  ArrowRight
-} from 'lucide-react';
+  LuBed,
+  LuWind,
+  LuSparkles,
+  LuBox,
+  LuSofa,
+  LuLayers,
+  LuArrowRight
+} from 'react-icons/lu';
 
 const categories = [
-  { name: 'Single Bedsheets', route: '/browse?search=single', icon: Bed, count: 'Ready to Rent', span: 'md:col-span-2 md:row-span-2', img: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800' },
-  { name: 'Double Bedsheets', route: '/browse?search=double', icon: Bed, count: 'Premium Fleet', span: 'md:col-span-2 md:row-span-1', img: '/items/double_bed.png' },
-  { name: 'Pillow Covers', route: '/browse?category=Pillow Covers', icon: Layers, count: 'Set Collection', span: 'md:col-span-1 md:row-span-2', img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?auto=format&fit=crop&q=80&w=800' },
-  { name: 'Sofa Throws', route: '/browse?category=Sofa Covers', icon: Wind, count: 'Designer Textures', span: 'md:col-span-1 md:row-span-2', img: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800' },
-  { name: 'Sofa Covers', route: '/browse?category=Sofa Covers', icon: Sofa, count: 'Custom Fit', span: 'md:col-span-2 md:row-span-1', img: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=800' },
-  { name: 'Bedding Sets', route: '/browse?category=Bedding', icon: Sparkles, count: 'Full Set Collection', span: 'md:col-span-4 md:row-span-1', img: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=1200' },
+  { name: 'Single Bedsheets', route: '/packages', icon: LuBed, count: 'Ready to Rent', span: 'md:col-span-2 md:row-span-2', img: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800' },
+  { name: 'Double Bedsheets', route: '/packages', icon: LuBed, count: 'Premium Fleet', span: 'md:col-span-2 md:row-span-1', img: '/items/double_bed.png' },
+  { name: 'Pillow Covers', route: '/packages', icon: LuLayers, count: 'Set Collection', span: 'md:col-span-1 md:row-span-2', img: 'https://images.unsplash.com/photo-1616627547584-bf28cee262db?auto=format&fit=crop&q=80&w=800' },
+  { name: 'Sofa Throws', route: '/packages', icon: LuWind, count: 'Designer Textures', span: 'md:col-span-1 md:row-span-2', img: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800', comingSoon: true },
+  { name: 'Sofa Covers', route: '/packages', icon: LuSofa, count: 'Custom Fit', span: 'md:col-span-2 md:row-span-1', img: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=800', comingSoon: true },
+  { name: 'Bedding Sets', route: '/packages', icon: LuSparkles, count: 'Full Set Collection', span: 'md:col-span-4 md:row-span-1', img: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=1200' },
 ];
 
 const CategorySection = () => {
@@ -46,8 +47,13 @@ const CategorySection = () => {
           {categories.map((cat, idx) => (
             <button
               key={cat.name}
-              disabled={cat.comingSoon}
-              onClick={() => navigate(cat.route)}
+              onClick={() => {
+                if (cat.comingSoon) {
+                  toast('Coming Soon!', { icon: '🚧' });
+                } else {
+                  navigate(cat.route);
+                }
+              }}
               className={`group relative overflow-hidden rounded-[3rem] transition-all duration-700 ${!cat.comingSoon ? 'hover:shadow-3xl hover:-translate-y-4' : 'cursor-default'} ${cat.span} bg-transparent border-none shadow-none`}
             >
               <div className="relative w-full h-full overflow-hidden rounded-[3rem]">
@@ -61,8 +67,8 @@ const CategorySection = () => {
                 <div className="absolute bottom-6 left-6 text-left pr-4">
                   <h3 className="text-3xl font-black text-white tracking-tight drop-shadow-2xl uppercase italic leading-none">{cat.name}</h3>
                   <div className="flex items-center gap-3 mt-3">
-                    <div className={`w-8 h-0.5 ${cat.comingSoon ? 'bg-slate-700' : 'bg-emerald-500'} rounded-full`} />
-                    <p className={`text-[9px] font-black ${cat.comingSoon ? 'text-slate-500' : 'text-emerald-300'} uppercase tracking-widest leading-none`}>{cat.count}</p>
+                    <div className={`w-8 h-0.5 ${cat.comingSoon ? 'bg-slate-400' : 'bg-emerald-500'} rounded-full`} />
+                    <p className={`text-[9px] font-black ${cat.comingSoon ? 'text-slate-300' : 'text-emerald-300'} uppercase tracking-widest leading-none`}>{cat.count}</p>
                   </div>
                 </div>
 
@@ -84,11 +90,11 @@ const CategorySection = () => {
         {/* Bottom CTA */}
         <div className="mt-12 text-center">
           <button
-            onClick={() => navigate('/browse')}
+            onClick={() => navigate('/packages')}
             className="inline-flex items-center gap-8 px-16 py-6 border-2 border-slate-200 dark:border-white/10 rounded-full font-black uppercase text-[10px] tracking-[0.4em] hover:bg-slate-900 dark:hover:bg-white hover:text-white dark:hover:text-black transition-all group shadow-xl"
           >
-            Browse Full Collection
-            <ArrowRight className="group-hover:translate-x-4 transition-transform" />
+            View All Packages
+            <LuArrowRight className="group-hover:translate-x-4 transition-transform" />
           </button>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
+
+// Components
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
@@ -12,13 +14,135 @@ import AdminDashboard from './components/AdminDashboard';
 import Cart from './components/Cart';
 import ProductDetails from './components/ProductDetails';
 import CitySelector from './components/CitySelector';
-import Browse from './components/Browse';
+
 import AdminLogin from './components/AdminLogin';
 
+// New Pages
+import HowItWorks from './components/HowItWorks';
+import Packages from './components/Packages';
+import CleanPromise from './components/CleanPromise';
+import AboutUs from './components/AboutUs';
+import TrackDelivery from './components/TrackDelivery';
+import FAQ from './components/FAQ';
+import Support from './components/Support';
+import Referral from './components/Referral';
 
-// Admin Protection Wrapper
-const AdminRoute = ({ children, isAuth }) => {
-  return isAuth ? children : <Navigate to="/admin/login" replace />;
+const AppContent = ({ 
+  darkMode, 
+  setDarkMode, 
+  selectedCity, 
+  setShowCitySelector,
+  handleCitySelect,
+  showCitySelector,
+  isAdminAuthenticated,
+  setIsAdminAuthenticated
+}) => {
+  const location = useLocation();
+  const isAdminPath = location.pathname.includes('/admin');
+
+  return (
+    <div className="min-h-screen bg-[#EFD2B0] text-slate-900 dark:text-slate-100 selection:bg-[#1A3263] selection:text-[#EFD2B0] transition-colors duration-500 font-sans">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+          className: 'bg-white dark:bg-[#1E293B] text-slate-900 dark:white border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl',
+        }}
+      />
+      
+      {showCitySelector && <CitySelector onSelect={handleCitySelect} />}
+
+      {!isAdminPath && (
+        <Navbar
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+          selectedCity={selectedCity}
+          onCityClick={() => setShowCitySelector(true)}
+        />
+      )}
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/packages" element={<Packages />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/clean-promise" element={<CleanPromise />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/referral" element={<Referral />} />
+        <Route path="/track" element={<TrackDelivery />} />
+        <Route path="/cart" element={<Cart />} />
+        
+        <Route
+          path="/admin/dashboard"
+          element={
+            isAdminAuthenticated ? (
+              <AdminDashboard />
+            ) : (
+              <Navigate to="/admin/login" />
+            )
+          }
+        />
+        <Route path="/admin/login" element={<AdminLogin setIsAdminAuthenticated={setIsAdminAuthenticated} />} />
+
+        <Route path="/product/:id" element={<ProductDetails />} />
+      </Routes>
+
+      {!isAdminPath && (
+        <footer className="py-32 bg-[#1A3263] text-[#EFD2B0] relative overflow-hidden border-t border-white/5 rounded-t-[60px] lg:rounded-t-[100px]">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-24 mb-24">
+              <div className="md:col-span-1 space-y-10">
+                  <Link to="/" className="text-4xl font-serif italic text-white tracking-tighter uppercase block">
+                    Closet<span className="opacity-40">Rush</span>
+                  </Link>
+                  <p className="text-lg text-[#EFD2B0]/40 font-light italic leading-relaxed">
+                    Elevating the hostel experience through architectural hygiene and industrial-grade sterilization.
+                  </p>
+              </div>
+
+              <div>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[#FFC570] mb-10">Company</h4>
+                  <div className="flex flex-col gap-6">
+                    <Link to="/about" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Our Story</Link>
+                    <Link to="/contact" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Contact</Link>
+                    <Link to="/referral" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Referral</Link>
+                  </div>
+              </div>
+
+              <div>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[#FFC570] mb-10">Support</h4>
+                  <div className="flex flex-col gap-6">
+                    <Link to="/faq" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">FAQ</Link>
+                    <Link to="/track" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Track Order</Link>
+                    <Link to="/support" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Help Center</Link>
+                  </div>
+              </div>
+
+              <div>
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[#FFC570] mb-10">Legals</h4>
+                  <div className="flex flex-col gap-6">
+                    <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Privacy</a>
+                    <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Terms</a>
+                    {selectedCity && (
+                      <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[#FFC570] mt-6 italic">Serving: {selectedCity}</p>
+                    )}
+                  </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12 pt-16 border-t border-white/5">
+              <p className="text-[10px] font-black text-white/10 uppercase tracking-[1em]">Elite Living. Reimagined.</p>
+              <p className="text-[9px] font-bold text-[#EFD2B0]/20 uppercase tracking-[0.4em]">© 2026 ClosetRush. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      )}
+    </div>
+  );
 };
 
 function App() {
@@ -29,9 +153,8 @@ function App() {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark';
   });
-  const [selectedCity, setSelectedCity] = useState(localStorage.getItem('userCity'));
-  const [showCitySelector, setShowCitySelector] = useState(!localStorage.getItem('userCity'));
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCity, setSelectedCity] = useState(localStorage.getItem('selectedCity') || '');
+  const [showCitySelector, setShowCitySelector] = useState(!localStorage.getItem('selectedCity'));
 
   useEffect(() => {
     if (darkMode) {
@@ -43,18 +166,9 @@ function App() {
     }
   }, [darkMode]);
 
-  useEffect(() => {
-    // Disable body scroll when city selector is open
-    if (showCitySelector) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [showCitySelector]);
-
   const handleCitySelect = (city) => {
-    localStorage.setItem('userCity', city.name);
     setSelectedCity(city.name);
+    localStorage.setItem('selectedCity', city.name);
     setShowCitySelector(false);
   };
 
@@ -62,80 +176,20 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-
-          <div className="min-h-screen bg-white dark:bg-[#0F172A] text-slate-900 dark:text-slate-100 selection:bg-indigo-100 selection:text-indigo-900 transition-colors duration-500 font-sans">
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                duration: 3000,
-                className: 'bg-white dark:bg-[#1E293B] text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl',
-              }}
-            />
-            {showCitySelector && <CitySelector onSelect={handleCitySelect} />}
-
-            <Navbar
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-              selectedCity={selectedCity}
-              onCityClick={() => setShowCitySelector(true)}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-            />
-
-            <Routes>
-              <Route path="/" element={<Home searchQuery={searchQuery} />} />
-              <Route path="/browse" element={<Browse />} />
-              <Route path="/product/:id" element={<ProductDetails />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <AdminRoute isAuth={isAdminAuthenticated}>
-                    <AdminDashboard setIsAdminAuthenticated={setIsAdminAuthenticated} />
-                  </AdminRoute>
-                }
-              />
-              <Route path="/admin/login" element={<AdminLogin setIsAdminAuthenticated={setIsAdminAuthenticated} />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/cart" element={<Cart />} />
-            </Routes>
-
-            <footer className="py-24 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0F172A] mt-20 relative overflow-hidden">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-20" />
-
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-between gap-12 relative z-10">
-                <div className="text-center md:text-left w-full flex flex-col md:flex-row items-center justify-between gap-12">
-                  <div className="flex flex-col items-center md:items-start">
-                    <Link to="/" className="text-3xl font-black text-slate-900 dark:text-white italic tracking-tighter uppercase" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                      ClosetRush<span className="text-slate-900 dark:text-white">.</span>
-                    </Link>
-                    {selectedCity && (
-                      <p className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-500 mt-4 italic">Serving: {selectedCity}</p>
-                    )}
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6">© 2026 Student Essentials Rental. All rights reserved.</p>
-                  </div>
-
-                  <div className="flex flex-wrap justify-center gap-12 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
-                    <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-all transform hover:-translate-y-1">Privacy</a>
-                    <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-all transform hover:-translate-y-1">Terms</a>
-                    <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-all transform hover:-translate-y-1">Support</a>
-                    <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-all transform hover:-translate-y-1">Contact</a>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-slate-100 dark:bg-slate-800" />
-
-                <p className="text-[10px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.8em]">Elite Living. Reimagined.</p>
-              </div>
-            </footer>
-          </div>
+          <AppContent 
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            selectedCity={selectedCity}
+            setShowCitySelector={setShowCitySelector}
+            handleCitySelect={handleCitySelect}
+            showCitySelector={showCitySelector}
+            isAdminAuthenticated={isAdminAuthenticated}
+            setIsAdminAuthenticated={setIsAdminAuthenticated}
+          />
         </Router>
       </CartProvider>
     </AuthProvider>
   );
 }
-
 
 export default App;
