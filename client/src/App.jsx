@@ -27,10 +27,10 @@ import FAQ from './components/FAQ';
 import Support from './components/Support';
 import Referral from './components/Referral';
 
-const AppContent = ({ 
-  darkMode, 
-  setDarkMode, 
-  selectedCity, 
+const AppContent = ({
+  darkMode,
+  setDarkMode,
+  selectedCity,
   setShowCitySelector,
   handleCitySelect,
   showCitySelector,
@@ -41,7 +41,7 @@ const AppContent = ({
   const isAdminPath = location.pathname.includes('/admin');
 
   return (
-    <div className="min-h-screen bg-[#EFD2B0] text-slate-900 dark:text-slate-100 selection:bg-[#1A3263] selection:text-[#EFD2B0] transition-colors duration-500 font-sans">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] selection:bg-[var(--accent-primary)] selection:text-[var(--bg-primary)] transition-colors duration-500 font-sans">
       <Toaster
         position="top-right"
         toastOptions={{
@@ -49,7 +49,7 @@ const AppContent = ({
           className: 'bg-white dark:bg-[#1E293B] text-slate-900 dark:white border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl',
         }}
       />
-      
+
       {showCitySelector && <CitySelector onSelect={handleCitySelect} />}
 
       {!isAdminPath && (
@@ -75,7 +75,7 @@ const AppContent = ({
         <Route path="/referral" element={<Referral />} />
         <Route path="/track" element={<TrackDelivery />} />
         <Route path="/cart" element={<Cart />} />
-        
+
         <Route
           path="/admin/dashboard"
           element={
@@ -92,51 +92,51 @@ const AppContent = ({
       </Routes>
 
       {!isAdminPath && (
-        <footer className="py-32 bg-[#1A3263] text-[#EFD2B0] relative overflow-hidden border-t border-white/5 rounded-t-[60px] lg:rounded-t-[100px]">
+        <footer className="py-16 bg-[var(--bg-secondary)] text-[var(--text-primary)] relative overflow-hidden border-t border-[var(--border)] rounded-t-[60px] lg:rounded-t-[100px]">
           <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-24 mb-24">
               <div className="md:col-span-1 space-y-10">
-                  <Link to="/" className="text-4xl font-serif italic text-white tracking-tighter uppercase block">
-                    Closet<span className="opacity-40">Rush</span>
-                  </Link>
-                  <p className="text-lg text-[#EFD2B0]/40 font-light italic leading-relaxed">
-                    Elevating the hostel experience through architectural hygiene and industrial-grade sterilization.
-                  </p>
+                <Link to="/" className="text-4xl font-serif italic text-[var(--text-primary)] tracking-tighter uppercase block">
+                  Closet<span className="opacity-40">Rush</span>
+                </Link>
+                <p className="text-lg text-[var(--text-primary)]/40 font-light italic leading-relaxed">
+                  Elevating the hostel experience through architectural hygiene and industrial-grade sterilization.
+                </p>
               </div>
 
               <div>
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[#FFC570] mb-10">Company</h4>
-                  <div className="flex flex-col gap-6">
-                    <Link to="/about" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Our Story</Link>
-                    <Link to="/contact" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Contact</Link>
-                    <Link to="/referral" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Referral</Link>
-                  </div>
+                <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[var(--text-secondary)] mb-10">Company</h4>
+                <div className="flex flex-col gap-6">
+                  <Link to="/about" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">Our Story</Link>
+                  <Link to="/contact" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">Contact</Link>
+                  <Link to="/referral" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">Referral</Link>
+                </div>
               </div>
 
               <div>
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[#FFC570] mb-10">Support</h4>
-                  <div className="flex flex-col gap-6">
-                    <Link to="/faq" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">FAQ</Link>
-                    <Link to="/track" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Track Order</Link>
-                    <Link to="/support" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Help Center</Link>
-                  </div>
+                <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[var(--text-secondary)] mb-10">Support</h4>
+                <div className="flex flex-col gap-6">
+                  <Link to="/faq" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">FAQ</Link>
+                  <Link to="/track" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">Track Order</Link>
+                  <Link to="/support" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">Help Center</Link>
+                </div>
               </div>
 
               <div>
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[#FFC570] mb-10">Legals</h4>
-                  <div className="flex flex-col gap-6">
-                    <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Privacy</a>
-                    <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#EFD2B0]/40 hover:text-[#FFC570] transition-colors">Terms</a>
-                    {selectedCity && (
-                      <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[#FFC570] mt-6 italic">Serving: {selectedCity}</p>
-                    )}
-                  </div>
+                <h4 className="text-[10px] font-black uppercase tracking-[0.6em] text-[var(--text-secondary)] mb-10">Legals</h4>
+                <div className="flex flex-col gap-6">
+                  <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">Privacy</a>
+                  <a href="#" className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--text-primary)]/40 hover:text-[var(--text-primary)] transition-colors">Terms</a>
+                  {selectedCity && (
+                    <p className="text-[9px] font-black uppercase tracking-[0.4em] text-[var(--text-secondary)] mt-6 italic">Serving: {selectedCity}</p>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center justify-between gap-12 pt-16 border-t border-white/5">
-              <p className="text-[10px] font-black text-white/10 uppercase tracking-[1em]">Elite Living. Reimagined.</p>
-              <p className="text-[9px] font-bold text-[#EFD2B0]/20 uppercase tracking-[0.4em]">© 2026 ClosetRush. All rights reserved.</p>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12 pt-16 border-t border-[var(--border)]">
+              <p className="text-[10px] font-black text-[var(--text-primary)]/10 uppercase tracking-[1em]">Elite Living. Reimagined.</p>
+              <p className="text-[9px] font-bold text-[var(--text-primary)]/20 uppercase tracking-[0.4em]">© 2026 ClosetRush. All rights reserved.</p>
             </div>
           </div>
         </footer>
@@ -176,7 +176,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          <AppContent 
+          <AppContent
             darkMode={darkMode}
             setDarkMode={setDarkMode}
             selectedCity={selectedCity}

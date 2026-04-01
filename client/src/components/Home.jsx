@@ -10,44 +10,44 @@ import { LuArrowRight, LuCircleCheck } from 'react-icons/lu';
 
 const Home = () => {
   return (
-    <div className="overflow-hidden bg-[#EFD2B0]">
+    <div className="overflow-hidden bg-[var(--bg-primary)]">
       <Hero />
 
       {/* Narrative Section: The Philosophy */}
-      <section className="bg-[#1A3263] text-[#EFD2B0] relative flex items-center overflow-hidden border-y border-white/5 py-32">
+      <section className="bg-[var(--bg-secondary)] text-[var(--text-primary)] relative flex items-center overflow-hidden border-y border-[var(--border)] py-12">
 
         <div className="w-full relative z-10 flex flex-col lg:flex-row items-stretch">
 
           {/* LEFT SECTION: Mission & Protocol (Contained) */}
-          <div className="flex-1 flex flex-col justify-center py-32 lg:py-60 px-6 sm:px-12 lg:pl-[10%] lg:pr-24">
-            <div className="max-w-2xl space-y-16">
+          <div className="flex-1 flex flex-col justify-center py-12 lg:py-20 px-6 sm:px-12 lg:pl-[10%] lg:pr-24">
+            <div className="max-w-2xl space-y-10">
               <div className="space-y-8">
-                <span className="text-[10px] font-black uppercase tracking-[1em] text-[#FFC570] block">
+                <span className="text-[10px] font-black uppercase tracking-[1em] text-[var(--accent-primary)] block">
                   THE NEW STANDARD
                 </span>
-                <h2 className="text-6xl lg:text-8xl xl:text-9xl font-serif italic text-white leading-[0.85] tracking-tighter">
+                <h2 className="text-6xl lg:text-8xl xl:text-9xl font-serif italic text-[var(--text-primary)] leading-[0.85] tracking-tighter">
                   Reclaiming <br /> <span className="opacity-30">Hostel Life.</span>
                 </h2>
-                <p className="text-2xl text-[#EFD2B0]/70 font-light leading-relaxed">
+                <p className="text-2xl text-[var(--text-primary)]/70 font-light leading-relaxed">
                   Hygiene shouldn't be a luxury. We've combined industrial sterilization with an elite logistics network to bring hospital-grade care to your dorm room.
                 </p>
               </div>
 
               <Link to="/about" className="inline-flex items-center gap-10 group">
-                <div className="w-16 h-16 rounded-full border border-[#FFC570]/30 flex items-center justify-center group-hover:bg-[#FFC570] group-hover:text-[#1A3263] transition-all duration-700">
+                <div className="w-16 h-16 rounded-full border border-[var(--accent-primary)]/30 flex items-center justify-center group-hover:bg-[var(--accent-primary)] group-hover:text-[var(--bg-primary)] transition-all duration-700">
                   <LuArrowRight className="w-6 h-6" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#FFC570]">Explore</span>
-                  <span className="text-sm font-serif italic text-white opacity-40 group-hover:opacity-100 transition-opacity">Our Protoctol</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--accent-primary)]">Explore</span>
+                  <span className="text-sm font-serif italic text-[var(--text-primary)] opacity-40 group-hover:opacity-100 transition-opacity">Our Protoctol</span>
                 </div>
               </Link>
             </div>
           </div>
 
           {/* RIGHT SECTION: Feature Set (Bleeding to the edge) */}
-          <div className="flex-1 bg-white/[0.02] border-l border-white/5 py-32 lg:py-60 px-6 sm:px-12 lg:px-24 flex flex-col justify-center">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 lg:gap-20 max-w-4xl mr-auto">
+          <div className="flex-1 bg-[var(--text-primary)]/[0.02] border-l border-[var(--border)] py-12 lg:py-20 px-6 sm:px-12 lg:px-24 flex flex-col justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 max-w-4xl mr-auto">
               {[
                 {
                   num: '01',
@@ -72,16 +72,16 @@ const Home = () => {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="space-y-6 pt-12 border-t border-[#EFD2B0]/10 hover:border-[#FFC570]/30 transition-colors duration-700 group"
+                  className="space-y-6 pt-8 border-t border-[var(--text-primary)]/10 hover:border-[var(--accent-primary)]/30 transition-colors duration-700 group"
                 >
-                  <span className="text-sm font-black font-serif italic text-[#FFC570] opacity-[0.15] group-hover:opacity-100 transition-opacity">
+                  <span className="text-sm font-black font-serif italic text-[var(--accent-primary)] opacity-[0.15] group-hover:opacity-100 transition-opacity">
                     {item.num}
                   </span>
                   <div className="space-y-4">
-                    <h4 className="text-2xl font-serif italic text-white group-hover:text-[#FFC570] transition-colors">
+                    <h4 className="text-2xl font-serif italic text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
                       {item.title}
                     </h4>
-                    <p className="text-lg text-[#EFD2B0]/40 font-light leading-relaxed group-hover:text-[#EFD2B0]/70 transition-colors">
+                    <p className="text-lg text-[var(--text-primary)]/40 font-light leading-relaxed group-hover:text-[var(--text-primary)]/70 transition-colors">
                       {item.desc}
                     </p>
                   </div>
@@ -93,32 +93,32 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="mt-[-4rem]">
+      <div>
         <HowItWorks />
       </div>
 
-      <Packages isDark={true} />
+      <Packages isDark={false} />
 
       <CleanPromise />
 
       <Testimonials />
 
       {/* The Grand Finale: CTA */}
-      <section className="py-20 relative bg-[#EFD2B0] overflow-hidden">
+      <section className="py-12 relative bg-[var(--bg-primary)] overflow-hidden">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-7xl md:text-[12rem] font-serif text-[#1A3263] mb-24 tracking-tighter leading-[0.75]">
+          <h2 className="text-7xl md:text-[12rem] font-serif text-[var(--text-primary)] mb-24 tracking-tighter leading-[0.75]">
             Experience <br /> <span className="italic opacity-20">the Elite.</span>
           </h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-12">
             <Link
               to="/signup"
-              className="px-20 py-8 bg-[#1A3263] text-[#EFD2B0] font-bold uppercase tracking-[0.5em] text-[10px] hover:bg-[#FFC570] hover:text-[#1A3263] transition-all duration-500 shadow-2xl"
+              className="px-20 py-8 bg-[var(--text-primary)] text-[var(--bg-primary)] font-bold uppercase tracking-[0.5em] text-[10px] hover:bg-[var(--accent-primary)] hover:text-[var(--bg-primary)] transition-all duration-500 shadow-2xl"
             >
               Join ClosetRush
             </Link>
             <Link
               to="/contact"
-              className="px-20 py-8 border border-[#1A3263] text-[#1A3263] font-bold uppercase tracking-[0.5em] text-[10px] hover:bg-[#1A3263] hover:text-[#EFD2B0] transition-all duration-500"
+              className="px-20 py-8 border border-[var(--text-primary)] text-[var(--text-primary)] font-bold uppercase tracking-[0.5em] text-[10px] hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all duration-500"
             >
               Speak to Concierge
             </Link>
@@ -126,14 +126,14 @@ const Home = () => {
         </div>
 
         {/* Scrolling Banner (Moved to Bottom) */}
-        <div className="w-full overflow-hidden py-10 border-y border-[#1A3263]/5 mt-32 whitespace-nowrap">
+        <div className="w-full overflow-hidden py-10 border-y border-[var(--border)] mt-16 whitespace-nowrap">
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
             transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
             className="flex gap-20 items-center"
           >
             {[...Array(8)].map((_, i) => (
-              <span key={i} className="text-4xl lg:text-7xl font-serif italic text-[#1A3263] opacity-10 uppercase tracking-tighter flex-shrink-0">
+              <span key={i} className="text-4xl lg:text-7xl font-serif italic text-[var(--text-primary)] opacity-10 uppercase tracking-tighter flex-shrink-0">
                 Experience the comfort and hygiene •
               </span>
             ))}
